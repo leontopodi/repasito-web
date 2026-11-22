@@ -53,6 +53,7 @@ const graph = [
     url: siteRoot,
     logo: absoluteUrl('/icons/icon-512.png', Astro.site),
     email: SITE.supportEmail,
+    contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', email: SITE.supportEmail, url: absoluteUrl('/support/', Astro.site) },
     founder: { '@id': `${siteRoot}#founder` },
     // The store listings and social profiles that belong to this site.
     sameAs: [...storeListings, ...SITE.social.map((s) => s.url)],

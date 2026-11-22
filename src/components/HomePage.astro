@@ -3,12 +3,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from './SiteHeader.astro';
 import SiteFooter from './SiteFooter.astro';
 import StoreBadges from './StoreBadges.astro';
+import FaqList from './FaqList.astro';
 import LoopDemo from './LoopDemo.astro';
 import ScreenshotStrip from './ScreenshotStrip.astro';
 import Phrased from './Phrased.astro';
 import { LARGEST_SCREENSHOT_WIDTH, SCREENSHOT_PANELS, screenshotHeight, screenshotPath } from '../config/screenshots';
 import { SITE, STORE } from '../config/site';
 import { getLocale, localePath, LOCALES, t, type LocaleSlug } from '../i18n';
+import { faqItems } from '../lib/faq';
 import { absoluteUrl, withBase } from '../lib/paths';
 import { appStoreUrl, playStoreUrl } from '../lib/storeLinks';
 import { POSES } from '../scripts/choreography';
@@ -20,7 +22,7 @@ interface Props {
 const { locale } = Astro.props;
 const def = getLocale(locale);
 const d = t(locale);
-const faq = d.faq.items.filter((item) => SITE.playEnabled || !item.android);
+const faq = faqItems(d);
 const pageUrl = absoluteUrl(localePath(locale), Astro.site);
 
 const siteRoot = absoluteUrl('/', Astro.site);
@@ -180,16 +182,7 @@ const structuredData = [
 
     <section class="faq wrap" aria-labelledby="faq-title">
       <h2 id="faq-title"><Phrased text={d.faq.title} locale={locale} /></h2>
-      <div class="faq__list">
-        {
-          faq.map((item) => (
-            <details>
-              <summary><span><Phrased text={item.q} locale={locale} /></span></summary>
-              <p class="muted">{item.a}</p>
-            </details>
-          ))
-        }
-      </div>
+      <FaqList items={faq} locale={locale} />
     </section>
 
     <section class="cta wrap" aria-labelledby="cta-title">
@@ -447,51 +440,6 @@ const structuredData = [
   .faq {
     display: grid;
     gap: 2rem;
-  }
-
-  .faq__list {
-    max-width: 52rem;
-  }
-
-  .faq details {
-    border-top: 1px solid var(--rule);
-  }
-
-  .faq details:last-child {
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .faq summary {
-    list-style: none;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    gap: 1.5rem;
-    padding-block: 1.1rem;
-    font-weight: 650;
-    font-size: var(--step-1);
-    line-height: 1.3;
-  }
-
-  .faq summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .faq summary::after {
-    content: '+';
-    flex: none;
-    font-weight: 400;
-    color: var(--haze);
-    transition: rotate 160ms ease;
-  }
-
-  .faq details[open] summary::after {
-    rotate: 45deg;
-  }
-
-  .faq details p {
-    padding-bottom: 1.25rem;
-    max-width: var(--measure);
   }
 
   /* CTA -------------------------------------------------------------------- */

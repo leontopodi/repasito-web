@@ -15,7 +15,7 @@ const year = new Date().getFullYear();
 <footer class="footer wrap">
   <nav class="footer__links" aria-label="RePasito">
     <a href={withBase('/privacy/')}>{dict.footer.privacy}</a>
-    <a href={`mailto:${SITE.supportEmail}`}>{dict.footer.support}</a>
+    <a href={withBase('/support/')}>{dict.footer.support}</a>
     {SITE.social.map((s) => <a href={s.url} rel="me noopener">{s.name}</a>)}
   </nav>
 

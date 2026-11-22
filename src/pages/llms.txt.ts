@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { SITE, STORE } from '../config/site';
 import { DEFAULT_LOCALE, LOCALES, localePath, t } from '../i18n';
+import { faqItems } from '../lib/faq';
 import { absoluteUrl } from '../lib/paths';
 import { appStoreUrl, playStoreUrl, type Campaign } from '../lib/storeLinks';
 
@@ -13,7 +14,7 @@ const CAMPAIGN: Campaign = { campaign: 'llms_txt', source: 'llms_txt', medium: '
  */
 export const GET: APIRoute = ({ site }) => {
   const d = t(DEFAULT_LOCALE);
-  const faq = d.faq.items.filter((item) => SITE.playEnabled || !item.android);
+  const faq = faqItems(d);
   const page = (slug: (typeof LOCALES)[number]['slug'], path = '') => absoluteUrl(localePath(slug, path), site);
 
   const lines = [
@@ -29,7 +30,7 @@ export const GET: APIRoute = ({ site }) => {
     '- Privacy: recordings and imported videos are not uploaded.',
     `- App Store category: Health & Fitness. App Store ID: ${STORE.appStoreId}.`,
     `- Made by Marcin Gorny, a dancer and software engineer (${SITE.founder.url}).`,
-    `- Support: ${SITE.supportEmail}`,
+    `- Support: ${SITE.supportEmail} (${absoluteUrl('/support/', site)})`,
     '',
     '## Download',
     '',
@@ -39,6 +40,7 @@ export const GET: APIRoute = ({ site }) => {
     '## Pages',
     '',
     `- [RePasito website (English)](${page(DEFAULT_LOCALE)}): what the app does, how a practice session goes, dance styles, FAQ`,
+    `- [Support](${absoluteUrl('/support/', site)}): contact, restoring and managing Pro purchases`,
     `- [Privacy policy](${absoluteUrl('/privacy/', site)}): what the apps and the website collect`,
     '',
     '## Other languages',

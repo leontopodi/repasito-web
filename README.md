@@ -78,5 +78,6 @@ The captions printed on the screenshots are the `screens` strings of each langua
   Each language is written in the voice of its App Store listing, not translated from English: informal address (du, tu, ty, ты) and dancers' own words (Achter, ósemka, 8 tiempos, восьмёрка, 8カウント). `meta.storeName` is the app name exactly as on that store listing.
 - Japanese and Chinese headings are split into phrases at build time (BudouX) so they never wrap mid-word.
 - Privacy policy: `src/content/privacy.html` (English, canonical at `/privacy/`).
+- Support page: `src/pages/support.astro` (English, at `/support/`). The apps' Support links and the store listings' support URLs point to it.
 - Store badges: CI downloads the official localized artwork (`npm run badges`). If a download fails, the badge falls back to a text button.
 - Pose artwork and icons come from the app's asset catalog (`dance-app/RePasito/Resources/Assets.xcassets`).

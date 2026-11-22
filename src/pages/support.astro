@@ -1,0 +1,119 @@
+---
+/**
+ * Support page (English). The apps' Support links and the store listings' support URLs point here.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FaqList from '../components/FaqList.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { SITE } from '../config/site';
+import { DEFAULT_LOCALE, t } from '../i18n';
+import { faqItems } from '../lib/faq';
+
+const locale = DEFAULT_LOCALE;
+const faq = faqItems(t(locale));
+
+const purchases = [
+  { title: 'Restore Pro', body: 'In the app, open Settings, then RePasito Pro, and tap Restore Purchases. Use the Apple or Google account you bought Pro with.' },
+  { title: 'Manage or cancel on iPhone', body: 'Open the Settings app, tap your name, then Subscriptions.' },
+  ...(SITE.playEnabled
+    ? [{ title: 'Manage or cancel on Android', body: 'Open Google Play, tap your profile picture, then Payments & subscriptions.' }]
+    : []),
+  { title: 'Refunds', body: `${SITE.playEnabled ? 'Apple and Google handle' : 'Apple handles'} billing and refunds for purchases made in ${SITE.playEnabled ? 'their stores' : 'the App Store'}.` },
+];
+---
+
+<BaseLayout
+  locale={locale}
+  page="support"
+  title="Support – RePasito"
+  description="Get help with RePasito: how to contact us, restore or manage RePasito Pro, and answers to common questions.">
+  <SiteHeader locale={locale} page="support" localized={false} />
+  <main id="main" class="support wrap">
+    <h1>Support</h1>
+    <p class="support__contact">
+      For help, questions or feedback, write to <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a>.
+    </p>
+    <p class="muted">
+      It helps to mention your phone model and what you were doing when the problem appeared. You can also write from the app: open Settings and tap Send
+      feedback.
+    </p>
+
+    <section aria-labelledby="purchases-title">
+      <h2 id="purchases-title">RePasito Pro purchases</h2>
+      <dl>
+        {
+          purchases.map((item) => (
+            <div>
+              <dt>{item.title}</dt>
+              <dd class="muted">{item.body}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section aria-labelledby="questions-title">
+      <h2 id="questions-title">Common questions</h2>
+      <FaqList items={faq} locale={locale} />
+    </section>
+  </main>
+  <SiteFooter locale={locale} />
+</BaseLayout>
+
+<style>
+  .support {
+    max-width: 46rem;
+    padding-block: 2rem 5rem;
+  }
+
+  h1 {
+    font-size: var(--step-3);
+    margin-bottom: 1.5rem;
+  }
+
+  .support__contact {
+    font-size: var(--step-1);
+    line-height: 1.45;
+    margin-bottom: 0.75rem;
+  }
+
+  section {
+    margin-top: 3rem;
+    display: grid;
+    gap: 1rem;
+  }
+
+  h2 {
+    font-size: var(--step-2);
+  }
+
+  dl {
+    margin: 0;
+  }
+
+  dl > div {
+    display: grid;
+    gap: 0.25rem 2rem;
+    padding-block: 1rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  dl > div:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  dt {
+    font-weight: 650;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    dl > div {
+      grid-template-columns: 15rem minmax(0, 1fr);
+    }
+  }
+</style>
