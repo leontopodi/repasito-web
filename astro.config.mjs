@@ -8,7 +8,8 @@ import sitemap from '@astrojs/sitemap';
  * - BASE_PATH  e.g. / (default) or /repasito-web when served from a project-pages path
  * The GitHub Pages workflow fills both from the Pages configuration.
  */
-const site = process.env.SITE_URL || 'https://repasito.app';
+// Pages may report http:// before its certificate is issued; the public site is always HTTPS.
+const site = (process.env.SITE_URL || 'https://repasito.app').replace(/^http:\/\//, 'https://');
 const base = process.env.BASE_PATH || '/';
 
 const sitemapLocales = {
