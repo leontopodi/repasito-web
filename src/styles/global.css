@@ -115,6 +115,19 @@ p {
   line-height: 1.8;
 }
 
+/* Headings wrap only between phrases (marked with <wbr> at build time), never mid-word. */
+:lang(ja) :is(h1, h2, h3, dt, summary),
+:lang(zh-Hans) :is(h1, h2, h3, dt, summary) {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+/* Korean breaks at spaces, not inside words. */
+:lang(ko) body {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
 .wrap {
   width: min(var(--page), 100% - 2 * var(--gutter));
   margin-inline: auto;

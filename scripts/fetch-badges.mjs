@@ -8,8 +8,8 @@ import { join } from 'node:path';
 
 const OUT = join(process.cwd(), 'public', 'badges');
 
-const APPLE = ['en-us', 'es-es', 'pt-br', 'fr-fr', 'it-it', 'de-de', 'pl-pl', 'ru-ru', 'ja-jp', 'ko-kr', 'zh-cn'];
-const PLAY = ['en', 'es', 'pt-br', 'fr', 'it', 'de', 'pl', 'ru', 'ja', 'ko', 'zh-cn'];
+const APPLE = ['en-us', 'es-mx', 'es-es', 'pt-br', 'fr-fr', 'it-it', 'de-de', 'pl-pl', 'ru-ru', 'ja-jp', 'ko-kr', 'zh-cn'];
+const PLAY = ['en', 'es-419', 'es', 'pt-br', 'fr', 'it', 'de', 'pl', 'ru', 'ja', 'ko', 'zh-cn'];
 
 const jobs = [
   ...APPLE.map((code) => ({

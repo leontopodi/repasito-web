@@ -15,6 +15,7 @@ const base = process.env.BASE_PATH || '/';
 const sitemapLocales = {
   en: 'en',
   es: 'es',
+  'es-es': 'es-ES',
   'pt-br': 'pt-BR',
   fr: 'fr',
   it: 'it',

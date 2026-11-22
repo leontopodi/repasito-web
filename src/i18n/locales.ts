@@ -1,5 +1,5 @@
 /**
- * Supported site locales. Mirrors the languages RePasito ships in on the App Store.
+ * Supported site locales. Mirrors RePasito's App Store listings.
  *
  * `slug` is the URL segment (the default locale lives at the site root),
  * `htmlLang` / `hreflang` follow BCP 47, and the store fields map to the
@@ -17,7 +17,9 @@ export interface LocaleDef {
 
 export const LOCALES = [
   { slug: 'en', htmlLang: 'en', ogLocale: 'en_US', nativeName: 'English', appleBadge: 'en-us', playBadge: 'en', playHl: 'en' },
-  { slug: 'es', htmlLang: 'es', ogLocale: 'es_ES', nativeName: 'Español', appleBadge: 'es-es', playBadge: 'es', playHl: 'es' },
+  // Generic Spanish serves Latin America; Spain has its own page, as on the App Store.
+  { slug: 'es', htmlLang: 'es', ogLocale: 'es_LA', nativeName: 'Español (Latinoamérica)', appleBadge: 'es-mx', playBadge: 'es-419', playHl: 'es-419' },
+  { slug: 'es-es', htmlLang: 'es-ES', ogLocale: 'es_ES', nativeName: 'Español (España)', appleBadge: 'es-es', playBadge: 'es', playHl: 'es' },
   { slug: 'pt-br', htmlLang: 'pt-BR', ogLocale: 'pt_BR', nativeName: 'Português (Brasil)', appleBadge: 'pt-br', playBadge: 'pt-br', playHl: 'pt-BR' },
   { slug: 'fr', htmlLang: 'fr', ogLocale: 'fr_FR', nativeName: 'Français', appleBadge: 'fr-fr', playBadge: 'fr', playHl: 'fr' },
   { slug: 'it', htmlLang: 'it', ogLocale: 'it_IT', nativeName: 'Italiano', appleBadge: 'it-it', playBadge: 'it', playHl: 'it' },

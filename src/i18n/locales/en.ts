@@ -2,6 +2,7 @@ import type { Dict } from '../types';
 
 export const en: Dict = {
   meta: {
+    storeName: 'RePasito: Dance Practice',
     title: 'RePasito: Dance Practice App – Loop, Slow Down & Record',
     description:
       'Loop any part of a song or YouTube video, slow it down, mirror it and record every take. The dance practice app for learning choreography on iPhone and Android.',
@@ -61,7 +62,7 @@ export const en: Dict = {
     title: 'Questions',
     items: [
       { q: 'How do I loop part of a YouTube or Instagram dance video?', a: 'Search YouTube in RePasito or paste a YouTube or Instagram Reel link, then drag the loop markers to the part you want. It repeats until you stop it.' },
-      { q: 'Can I slow down a dance video?', a: 'Yes. Pick any practice speed, from half speed upwards. With Pro you can fine-tune it in 0.05× steps.' },
+      { q: 'Can I slow down a dance video?', a: 'Yes. Set any speed from 0.25× to 2×. With Pro you can fine-tune it in 0.05× steps.' },
       { q: 'Is RePasito free?', a: 'You can download it and start practicing for free. Pro unlocks unlimited looping, review and saving, and you can try it free for your first three practice days.' },
       { q: 'Is RePasito on Android?', a: 'Yes. RePasito is on the App Store for iPhone and on Google Play for Android. Apple Music is available on iPhone only.', android: true },
       { q: 'Are my videos uploaded?', a: 'No. Your recordings and imported media stay on your device.' },

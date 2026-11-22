@@ -1,6 +1,8 @@
 /** Copy for one locale. Every locale must provide every key (enforced by the compiler). */
 export interface Dict {
   meta: {
+    /** App name exactly as on the App Store and Google Play listing for this language. */
+    storeName: string;
     title: string;
     description: string;
   };

@@ -4,6 +4,7 @@ import SiteHeader from './SiteHeader.astro';
 import SiteFooter from './SiteFooter.astro';
 import StoreBadges from './StoreBadges.astro';
 import LoopDemo from './LoopDemo.astro';
+import Phrased from './Phrased.astro';
 import { SITE, STORE } from '../config/site';
 import { getLocale, localePath, t, type LocaleSlug } from '../i18n';
 import { absoluteUrl, withBase } from '../lib/paths';
@@ -23,7 +24,7 @@ const pageUrl = absoluteUrl(localePath(locale), Astro.site);
 const structuredData = [
   {
     '@type': 'MobileApplication',
-    name: SITE.storeName,
+    name: d.meta.storeName,
     alternateName: SITE.name,
     description: d.meta.description,
     url: pageUrl,
@@ -53,7 +54,7 @@ const structuredData = [
 
   <main id="main">
     <section class="hero wrap" aria-labelledby="hero-title">
-      <h1 id="hero-title" class="hero__title">{d.hero.title}</h1>
+      <h1 id="hero-title" class="hero__title"><Phrased text={d.hero.title} locale={locale} /></h1>
       <div class="hero__copy">
         <p class="lede">{d.hero.lede}</p>
         <StoreBadges locale={locale} placement="hero" />
@@ -65,12 +66,12 @@ const structuredData = [
     </section>
 
     <section class="steps wrap" aria-labelledby="steps-title">
-      <h2 id="steps-title">{d.steps.title}</h2>
+      <h2 id="steps-title"><Phrased text={d.steps.title} locale={locale} /></h2>
       <ol class="steps__list">
         {
           d.steps.items.map((step) => (
             <li>
-              <h3>{step.title}</h3>
+              <h3><Phrased text={step.title} locale={locale} /></h3>
               <p class="muted">{step.body}</p>
             </li>
           ))
@@ -79,12 +80,12 @@ const structuredData = [
     </section>
 
     <section class="details wrap" aria-labelledby="details-title">
-      <h2 id="details-title">{d.details.title}</h2>
+      <h2 id="details-title"><Phrased text={d.details.title} locale={locale} /></h2>
       <dl class="details__list">
         {
           d.details.items.map((item) => (
             <div>
-              <dt>{item.title}</dt>
+              <dt><Phrased text={item.title} locale={locale} /></dt>
               <dd class="muted">{item.body}</dd>
             </div>
           ))
@@ -94,7 +95,7 @@ const structuredData = [
 
     <section class="gestures wrap" aria-labelledby="gestures-title">
       <div class="gestures__copy">
-        <h2 id="gestures-title">{d.gestures.title}</h2>
+        <h2 id="gestures-title"><Phrased text={d.gestures.title} locale={locale} /></h2>
         <p class="muted">{d.gestures.body}</p>
       </div>
       <ul class="gestures__poses">
@@ -110,12 +111,12 @@ const structuredData = [
     </section>
 
     <section class="styles wrap" aria-labelledby="styles-title">
-      <h2 id="styles-title">{d.styles.title}</h2>
+      <h2 id="styles-title"><Phrased text={d.styles.title} locale={locale} /></h2>
       <p class="styles__body">{d.styles.body}</p>
     </section>
 
     <section class="story wrap" aria-labelledby="story-title">
-      <h2 id="story-title">{d.story.title}</h2>
+      <h2 id="story-title"><Phrased text={d.story.title} locale={locale} /></h2>
       <blockquote>
         <p>{d.story.body}</p>
         <footer class="story__by muted">
@@ -126,12 +127,12 @@ const structuredData = [
     </section>
 
     <section class="faq wrap" aria-labelledby="faq-title">
-      <h2 id="faq-title">{d.faq.title}</h2>
+      <h2 id="faq-title"><Phrased text={d.faq.title} locale={locale} /></h2>
       <div class="faq__list">
         {
           faq.map((item) => (
             <details>
-              <summary>{item.q}</summary>
+              <summary><span><Phrased text={item.q} locale={locale} /></span></summary>
               <p class="muted">{item.a}</p>
             </details>
           ))
@@ -140,7 +141,7 @@ const structuredData = [
     </section>
 
     <section class="cta wrap" aria-labelledby="cta-title">
-      <h2 id="cta-title">{d.cta.title}</h2>
+      <h2 id="cta-title"><Phrased text={d.cta.title} locale={locale} /></h2>
       <p class="muted">{d.cta.body}</p>
       <StoreBadges locale={locale} placement="cta" />
     </section>

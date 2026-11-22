@@ -1,0 +1,14 @@
+---
+/** Renders text with a line-break opportunity between phrases (Japanese and Chinese headings). */
+import type { LocaleSlug } from '../i18n';
+import { phrases } from '../lib/phrases';
+
+interface Props {
+  text: string;
+  locale: LocaleSlug;
+}
+
+const parts = phrases(Astro.props.text, Astro.props.locale);
+---
+
+{parts.map((part, i) => (<>{i > 0 && <wbr />}{part}</>))}

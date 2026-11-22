@@ -2,7 +2,7 @@
 
 Marketing website for RePasito, served at https://repasito.app from GitHub Pages.
 
-Static [Astro](https://astro.build) site in the 11 languages the app ships in. It sets no cookies and stores nothing in the browser. Visits are counted with Cloudflare Web Analytics, which is cookieless.
+Static [Astro](https://astro.build) site with one page per App Store listing: 11 languages, with Spanish split into Latin America (`/es/`) and Spain (`/es-es/`). It sets no cookies and stores nothing in the browser. Visits are counted with Cloudflare Web Analytics, which is cookieless.
 
 ## Develop
 
@@ -52,6 +52,8 @@ Token convention: `<channel>_<placement>`, lowercase, at most 40 characters (App
 ## Content
 
 - Copy: `src/i18n/locales/<locale>.ts`. The `Dict` type makes the compiler reject a locale with a missing key.
+  Each language is written in the voice of its App Store listing, not translated from English: informal address (du, tu, ty, ты) and dancers' own words (Achter, ósemka, 8 tiempos, восьмёрка, 8カウント). `meta.storeName` is the app name exactly as on that store listing.
+- Japanese and Chinese headings are split into phrases at build time (BudouX) so they never wrap mid-word.
 - Privacy policy: `src/content/privacy.html` (English, canonical at `/privacy/`).
 - Store badges: CI downloads the official localized artwork (`npm run badges`). If a download fails, the badge falls back to a text button.
 - Pose artwork and icons come from the app's asset catalog (`dance-app/RePasito/Resources/Assets.xcassets`).
