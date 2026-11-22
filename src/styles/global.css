@@ -1,0 +1,170 @@
+@import '@fontsource-variable/archivo/wdth.css';
+
+/*
+ * Tokens. Brand colors come from the app icon masters.
+ * Mint has one meaning on this site: the part you are repeating (the loop, the active count,
+ * the limbs that make a gesture). It is never used for decoration.
+ */
+:root {
+  color-scheme: dark;
+  --ink: #060708;
+  --stage: #0e1211;
+  --stage-raised: #161b1a;
+  --chalk: #f2f4f3;
+  --haze: #9ba7a2;
+  --mint: #2bd9a0;
+  --mint-deep: #0b3a2b;
+  --rule: rgb(242 244 243 / 0.12);
+
+  --font: 'Archivo Variable', 'Archivo', system-ui, -apple-system, 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP',
+    'Apple SD Gothic Neo', 'Noto Sans KR', 'PingFang SC', 'Noto Sans SC', sans-serif;
+
+  /* Modular scale, ratio 1.25 from 17px. */
+  --step--1: 0.85rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.33rem;
+  --step-2: 1.66rem;
+  --step-3: clamp(1.9rem, 1.4rem + 2vw, 2.6rem);
+  --step-4: clamp(2.5rem, 1.4rem + 5.2vw, 5.4rem);
+
+  --measure: 64ch;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --page: 1180px;
+  --radius-s: 6px;
+  --radius-l: 18px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--chalk);
+  font-family: var(--font);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  font-stretch: 100%;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  text-decoration-color: var(--mint);
+}
+
+:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 780;
+  font-stretch: 116%;
+  line-height: 1.02;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: var(--step-3);
+}
+
+h3 {
+  font-size: var(--step-1);
+  font-stretch: 108%;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* CJK text does not have a width axis and reads better with more leading. */
+:lang(ja) h1, :lang(ja) h2, :lang(ko) h1, :lang(ko) h2, :lang(zh-Hans) h1, :lang(zh-Hans) h2 {
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+:lang(ja) body, :lang(ko) body, :lang(zh-Hans) body {
+  line-height: 1.8;
+}
+
+.wrap {
+  width: min(var(--page), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+.lede {
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: var(--chalk);
+  max-width: 34ch;
+}
+
+:lang(ja) .lede, :lang(ko) .lede, :lang(zh-Hans) .lede {
+  max-width: 26em;
+}
+
+.muted {
+  color: var(--haze);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: -100px;
+  z-index: 10;
+  padding: 0.6rem 1rem;
+  background: var(--chalk);
+  color: var(--ink);
+  border-radius: var(--radius-s);
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,136 @@
+---
+import { LOCALES, localePath, t, type LocaleSlug } from '../i18n';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  locale: LocaleSlug;
+  /** Page path without locale prefix; language links point to the same page in each locale. */
+  page?: string;
+  /** Whether `page` exists in every locale. Otherwise language links go to each locale's home. */
+  localized?: boolean;
+}
+
+const { locale, page = '', localized = true } = Astro.props;
+const dict = t(locale);
+const current = LOCALES.find((l) => l.slug === locale)!;
+---
+
+<header class="header wrap">
+  <a class="brand" href={withBase(localePath(locale))}>
+    <img src={withBase('/img/app-icon.webp')} alt="" width="36" height="36" />
+    <span>RePasito</span>
+  </a>
+
+  <details class="lang">
+    <summary>
+      <span class="visually-hidden">{dict.nav.language}: </span>{current.nativeName}
+    </summary>
+    <ul>
+      {
+        LOCALES.map((l) => (
+          <li>
+            <a
+              href={withBase(localePath(l.slug, localized ? page : ''))}
+              hreflang={l.htmlLang}
+              lang={l.htmlLang}
+              aria-current={l.slug === locale ? 'true' : undefined}>
+              {l.nativeName}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </details>
+</header>
+
+<style>
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.25rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    font-weight: 800;
+    font-stretch: 112%;
+    font-size: var(--step-1);
+    letter-spacing: -0.01em;
+  }
+
+  .brand img {
+    border-radius: 9px;
+  }
+
+  .lang {
+    position: relative;
+  }
+
+  .lang summary {
+    list-style: none;
+    cursor: pointer;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding-inline: 0.9rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-size: var(--step--1);
+    font-weight: 600;
+  }
+
+  .lang summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lang summary::after {
+    content: '';
+    width: 0.45em;
+    height: 0.45em;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    rotate: 45deg;
+    translate: 0 -0.15em;
+  }
+
+  .lang[open] summary::after {
+    rotate: 225deg;
+    translate: 0 0.1em;
+  }
+
+  .lang ul {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    z-index: 5;
+    margin: 0;
+    padding: 0.4rem;
+    list-style: none;
+    min-width: 13rem;
+    background: var(--stage-raised);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgb(0 0 0 / 0.5);
+  }
+
+  .lang a {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: var(--step--1);
+  }
+
+  .lang a:hover {
+    background: rgb(242 244 243 / 0.07);
+  }
+
+  .lang a[aria-current] {
+    color: var(--mint);
+  }
+</style>

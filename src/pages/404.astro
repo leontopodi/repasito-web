@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { DEFAULT_LOCALE } from '../i18n';
+import { withBase } from '../lib/paths';
+---
+
+<BaseLayout locale={DEFAULT_LOCALE} title="Page not found – RePasito" description="This page doesn’t exist." noindex>
+  <SiteHeader locale={DEFAULT_LOCALE} localized={false} />
+  <main id="main" class="wrap missing">
+    <h1>This page doesn’t exist.</h1>
+    <p class="muted">Check the address, or go to the RePasito home page.</p>
+    <p><a href={withBase('/')}>Go to the home page</a></p>
+  </main>
+</BaseLayout>
+
+<style>
+  .missing {
+    display: grid;
+    gap: 1rem;
+    padding-block: 4rem 8rem;
+  }
+
+  .missing h1 {
+    font-size: var(--step-3);
+  }
+</style>

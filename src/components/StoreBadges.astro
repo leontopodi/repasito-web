@@ -1,0 +1,92 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { SITE, STORE } from '../config/site';
+import { getLocale, t, type LocaleSlug } from '../i18n';
+import { appStoreUrl, playStoreUrl, resolveCampaign } from '../lib/storeLinks';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  locale: LocaleSlug;
+  /** Where on the page the badges sit; becomes the campaign token `web_<placement>`. */
+  placement: string;
+}
+
+const { locale, placement } = Astro.props;
+const def = getLocale(locale);
+const dict = t(locale);
+
+// Build-time defaults; the store-links script re-targets these for visitors who arrived via a tracked link.
+const campaign = resolveCampaign(placement);
+const appleHref = appStoreUrl(STORE, campaign);
+const playHref = playStoreUrl(STORE, campaign, def.playHl);
+
+/** Official localized badges are fetched into public/badges by `npm run badges` (see README). */
+function badge(file: string, fallback: string): string | undefined {
+  for (const name of [file, fallback]) {
+    if (existsSync(join(process.cwd(), 'public', 'badges', name))) return withBase(`/badges/${name}`);
+  }
+  return undefined;
+}
+
+const appleBadge = badge(`app-store-${def.appleBadge}.svg`, 'app-store-en-us.svg');
+const playBadge = badge(`google-play-${def.playBadge}.png`, 'google-play-en.png');
+---
+
+<div class="badges">
+  <a class="badge badge--apple" href={appleHref} data-store="app_store" data-placement={placement} data-locale={locale}>
+    {appleBadge ? <img src={appleBadge} alt={dict.store.appStore} width="120" height="40" loading="lazy" /> : <span>{dict.store.appStore}</span>}
+  </a>
+  {
+    SITE.playEnabled && (
+      <a class="badge badge--play" href={playHref} data-store="google_play" data-placement={placement} data-locale={locale} data-hl={def.playHl}>
+        {playBadge ? <img src={playBadge} alt={dict.store.googlePlay} width="155" height="60" loading="lazy" /> : <span>{dict.store.googlePlay}</span>}
+      </a>
+    )
+  }
+</div>
+
+<style>
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    text-decoration: none;
+    border-radius: 10px;
+  }
+
+  .badge img {
+    height: 48px;
+    width: auto;
+  }
+
+  /* Google's badge artwork includes built-in padding around the button. */
+  .badge--play img {
+    height: 70px;
+    margin-block: -11px;
+    margin-inline: -9px;
+  }
+
+  /* Text fallback when the official badge artwork is not available at build time. */
+  .badge span {
+    padding: 0.7rem 1.1rem;
+    border: 1px solid var(--chalk);
+    border-radius: 10px;
+    font-weight: 650;
+    font-stretch: 104%;
+    line-height: 1.2;
+    background: var(--ink);
+  }
+
+  .badge:hover span {
+    background: var(--chalk);
+    color: var(--ink);
+  }
+</style>

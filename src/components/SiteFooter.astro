@@ -1,0 +1,63 @@
+---
+import { SITE } from '../config/site';
+import { LOCALES, localePath, t, type LocaleSlug } from '../i18n';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  locale: LocaleSlug;
+}
+
+const { locale } = Astro.props;
+const dict = t(locale);
+const year = new Date().getFullYear();
+---
+
+<footer class="footer wrap">
+  <nav class="footer__links" aria-label="RePasito">
+    <a href={withBase('/privacy/')}>{dict.footer.privacy}</a>
+    <a href={`mailto:${SITE.supportEmail}`}>{dict.footer.support}</a>
+    {SITE.social.map((s) => <a href={s.url} rel="me noopener">{s.name}</a>)}
+  </nav>
+
+  <nav class="footer__langs" aria-label={dict.footer.languages}>
+    {
+      LOCALES.map((l) => (
+        <a href={withBase(localePath(l.slug))} hreflang={l.htmlLang} lang={l.htmlLang} aria-current={l.slug === locale ? 'page' : undefined}>
+          {l.nativeName}
+        </a>
+      ))
+    }
+  </nav>
+
+  <p class="footer__copy">© {year} RePasito</p>
+</footer>
+
+<style>
+  .footer {
+    display: grid;
+    gap: 1.25rem;
+    padding-block: 2.5rem 3rem;
+    border-top: 1px solid var(--rule);
+    font-size: var(--step--1);
+    color: var(--haze);
+  }
+
+  .footer nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+  }
+
+  .footer__links a {
+    color: var(--chalk);
+  }
+
+  .footer__langs a {
+    text-decoration: none;
+  }
+
+  .footer__langs a:hover,
+  .footer__langs a[aria-current] {
+    color: var(--chalk);
+  }
+</style>

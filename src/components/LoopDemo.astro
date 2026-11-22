@@ -1,0 +1,316 @@
+---
+import { t, type LocaleSlug } from '../i18n';
+import { withBase } from '../lib/paths';
+import { COUNTS, POSES, SPEEDS, DEFAULT_LOOP } from '../scripts/choreography';
+
+interface Props {
+  locale: LocaleSlug;
+}
+
+const { locale } = Astro.props;
+const dict = t(locale);
+const [start, end] = DEFAULT_LOOP;
+const groupName = `speed-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<figure class="demo" data-loop-demo data-start={start} data-end={end} aria-label={dict.demo.label} style={`--start:${start};--end:${end};`}>
+  <div class="demo__stage" aria-hidden="true">
+    <span class="demo__numeral" data-numeral>{start}</span>
+    <div class="demo__dancer" data-dancer>
+      {
+        POSES.map((pose, i) => (
+          <img
+            src={withBase(`/img/pose-${pose}.webp`)}
+            alt=""
+            width="384"
+            height="414"
+            data-pose={pose}
+            class:list={['demo__pose', { 'is-active': i === 0 }]}
+            fetchpriority={i === 0 ? 'high' : 'auto'}
+          />
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="demo__track" data-track>
+    <ol class="demo__counts">
+      {COUNTS.map((n) => <li data-count={n}>{n}</li>)}
+    </ol>
+    <div class="demo__loop" data-loop>
+      <span
+        class="demo__handle demo__handle--start"
+        role="slider"
+        tabindex="0"
+        aria-label={dict.demo.loopStart}
+        aria-valuemin="1"
+        aria-valuemax={COUNTS.length}
+        aria-valuenow={start}
+        data-handle="start"></span>
+      <span
+        class="demo__handle demo__handle--end"
+        role="slider"
+        tabindex="0"
+        aria-label={dict.demo.loopEnd}
+        aria-valuemin="1"
+        aria-valuemax={COUNTS.length}
+        aria-valuenow={end}
+        data-handle="end"></span>
+    </div>
+  </div>
+
+  <div class="demo__controls">
+    <button class="demo__play" type="button" data-play aria-pressed="false" data-label-play={dict.demo.play} data-label-pause={dict.demo.pause}>
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path class="icon-play" d="M7 4.5v15l12.5-7.5z"></path><path class="icon-pause" d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z"></path></svg>
+      <span class="visually-hidden" data-play-label>{dict.demo.play}</span>
+    </button>
+
+    <fieldset class="demo__speed">
+      <legend class="visually-hidden">{dict.demo.speed}</legend>
+      {
+        SPEEDS.map((speed) => (
+          <label>
+            <input type="radio" name={groupName} value={speed} checked={speed === 1} data-speed />
+            <span>{`${speed}×`}</span>
+          </label>
+        ))
+      }
+    </fieldset>
+
+    <button class="demo__mirror" type="button" data-mirror aria-pressed="false">{dict.demo.mirror}</button>
+  </div>
+
+  <figcaption class="demo__hint">{dict.demo.hint}</figcaption>
+</figure>
+
+<script>
+  import { LoopDemo } from '../scripts/loop-demo';
+
+  document.querySelectorAll<HTMLElement>('[data-loop-demo]').forEach((root) => new LoopDemo(root).mount());
+</script>
+
+<style>
+  .demo {
+    --cells: 8;
+    margin: 0;
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    background: var(--stage);
+    border-radius: var(--radius-l);
+    display: grid;
+    gap: 1rem;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .demo__stage {
+    position: relative;
+    aspect-ratio: 5 / 4;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    container-type: inline-size;
+    border-radius: 12px;
+    background:
+      linear-gradient(to top, rgb(242 244 243 / 0.05), transparent 30%),
+      var(--ink);
+  }
+
+  /* The count being danced, set huge behind the dancer: the 5-6-7-8 every dancer hears. */
+  .demo__numeral {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 84cqw;
+    translate: 0 1%;
+    font-weight: 900;
+    font-stretch: 62%;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 2px rgb(43 217 160 / 0.5);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .demo__dancer {
+    position: relative;
+    width: 52%;
+    aspect-ratio: 384 / 414;
+    transition: transform 120ms ease-out;
+  }
+
+  .demo__dancer.is-flipped {
+    transform: scaleX(-1);
+  }
+
+  .demo__pose {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+
+  .demo__pose.is-active {
+    opacity: 1;
+  }
+
+  .demo__track {
+    position: relative;
+    touch-action: none;
+    cursor: ew-resize;
+  }
+
+  .demo__counts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(var(--cells), 1fr);
+    gap: 4px;
+  }
+
+  .demo__counts li {
+    display: grid;
+    place-items: center;
+    height: 48px;
+    border-radius: var(--radius-s);
+    background: var(--stage-raised);
+    color: var(--haze);
+    font-weight: 700;
+    font-stretch: 80%;
+    font-size: var(--step-1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .demo__counts li.is-in-loop {
+    background: var(--mint-deep);
+    color: var(--chalk);
+  }
+
+  .demo__counts li.is-current {
+    background: var(--mint);
+    color: var(--ink);
+  }
+
+  .demo__loop {
+    position: absolute;
+    top: -6px;
+    bottom: -6px;
+    left: calc((var(--start) - 1) / var(--cells) * 100%);
+    width: calc((var(--end) - var(--start) + 1) / var(--cells) * 100%);
+    border: 2px solid var(--mint);
+    border-radius: 10px;
+    pointer-events: none;
+  }
+
+  .demo__handle {
+    position: absolute;
+    top: 50%;
+    width: 14px;
+    height: 40px;
+    translate: 0 -50%;
+    background: var(--mint);
+    border-radius: 6px;
+    pointer-events: auto;
+    cursor: ew-resize;
+  }
+
+  .demo__handle::after {
+    content: '';
+    position: absolute;
+    inset: 11px 5px;
+    border-inline: 1.5px solid var(--ink);
+  }
+
+  .demo__handle--start {
+    left: -8px;
+  }
+
+  .demo__handle--end {
+    right: -8px;
+  }
+
+  .demo__controls {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.4rem, 1.5vw, 0.75rem);
+    margin-top: 0.25rem;
+  }
+
+  .demo__play,
+  .demo__mirror,
+  .demo__speed span {
+    min-height: 44px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--chalk);
+    font: inherit;
+    font-weight: 600;
+    font-size: var(--step--1);
+    cursor: pointer;
+  }
+
+  .demo__play {
+    width: 44px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+  }
+
+  .demo__play svg {
+    fill: currentColor;
+  }
+
+  .demo__play .icon-pause,
+  .demo__play[aria-pressed='true'] .icon-play {
+    display: none;
+  }
+
+  .demo__play[aria-pressed='true'] .icon-pause {
+    display: inline;
+  }
+
+  .demo__speed {
+    display: flex;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .demo__speed input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .demo__speed span {
+    display: inline-grid;
+    place-items: center;
+    padding-inline: clamp(0.6rem, 2vw, 0.9rem);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .demo__speed input:checked + span,
+  .demo__mirror[aria-pressed='true'] {
+    background: var(--chalk);
+    border-color: var(--chalk);
+    color: var(--ink);
+  }
+
+  .demo__speed input:focus-visible + span {
+    outline: 2px solid var(--mint);
+    outline-offset: 3px;
+  }
+
+  .demo__mirror {
+    padding-inline: clamp(0.7rem, 2vw, 1rem);
+    margin-inline-start: auto;
+  }
+
+  .demo__hint {
+    color: var(--haze);
+    font-size: var(--step--1);
+  }
+</style>

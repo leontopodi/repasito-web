@@ -1,0 +1,60 @@
+---
+/**
+ * Smart download link: /get/?c=<campaign>
+ * Sends iPhone/iPad visitors to the App Store and Android visitors to Google Play, carrying the
+ * campaign token. Everyone else sees both badges.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import StoreBadges from '../components/StoreBadges.astro';
+import { DEFAULT_LOCALE, t } from '../i18n';
+import { withBase } from '../lib/paths';
+
+const locale = DEFAULT_LOCALE;
+const d = t(locale);
+---
+
+<BaseLayout locale={locale} page="get" title={`Download ${d.meta.title}`} description={d.meta.description} noindex>
+  <SiteHeader locale={locale} localized={false} />
+  <main id="main" class="wrap get">
+    <h1>Get RePasito</h1>
+    <p class="muted">{d.cta.body}</p>
+    <StoreBadges locale={locale} placement="get" />
+    <p><a href={withBase('/')}>{d.meta.title}</a></p>
+  </main>
+</BaseLayout>
+
+<script>
+  import { STORE, SITE } from '../config/site';
+  import { CAMPAIGNS } from '../config/campaigns';
+import { appStoreUrl, playStoreUrl, resolveCampaign } from '../lib/storeLinks';
+  import { initStoreLinks } from '../scripts/store-links';
+  import { detectPlatform } from '../scripts/platform';
+  import { track } from '../scripts/analytics';
+
+  const params = new URLSearchParams(window.location.search);
+  const campaign = resolveCampaign('get', params, CAMPAIGNS);
+  const platform = detectPlatform(navigator.userAgent, navigator.maxTouchPoints);
+  const target =
+    platform === 'ios' ? appStoreUrl(STORE, campaign) : platform === 'android' && SITE.playEnabled ? playStoreUrl(STORE, campaign) : undefined;
+
+  if (target) {
+    track('store_redirect', { store: platform === 'ios' ? 'app_store' : 'google_play', campaign: campaign.campaign });
+    window.location.replace(target);
+  } else {
+    initStoreLinks();
+  }
+</script>
+
+<style>
+  .get {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+    padding-block: 3rem 6rem;
+  }
+
+  .get h1 {
+    font-size: var(--step-4);
+  }
+</style>

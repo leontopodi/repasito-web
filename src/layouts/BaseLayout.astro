@@ -1,0 +1,114 @@
+---
+import '../styles/global.css';
+import { SITE, STORE } from '../config/site';
+import { LOCALES, DEFAULT_LOCALE, getLocale, localePath, t, type LocaleSlug } from '../i18n';
+import { absoluteUrl, withBase } from '../lib/paths';
+
+interface Props {
+  locale: LocaleSlug;
+  title: string;
+  description: string;
+  /** Page path without locale prefix, e.g. '' for home or 'privacy'. */
+  page?: string;
+  /** Emit hreflang alternates for every locale (only for pages that exist in all locales). */
+  alternates?: boolean;
+  noindex?: boolean;
+  /** Extra JSON-LD objects for this page. */
+  structuredData?: ReadonlyArray<Record<string, unknown>>;
+}
+
+const { locale, title, description, page = '', alternates = false, noindex = false, structuredData = [] } = Astro.props;
+const def = getLocale(locale);
+const dict = t(locale);
+const canonical = absoluteUrl(localePath(locale, page), Astro.site);
+const ogImage = absoluteUrl('/img/og.png', Astro.site);
+const siteRoot = absoluteUrl('/', Astro.site);
+
+const graph = [
+  {
+    '@type': 'Organization',
+    '@id': `${siteRoot}#org`,
+    name: SITE.name,
+    url: siteRoot,
+    logo: absoluteUrl('/icons/icon-512.png', Astro.site),
+    email: SITE.supportEmail,
+    sameAs: SITE.social.map((s) => s.url),
+  },
+  {
+    '@type': 'WebSite',
+    '@id': `${siteRoot}#website`,
+    name: SITE.name,
+    url: siteRoot,
+    inLanguage: LOCALES.map((l) => l.htmlLang),
+    publisher: { '@id': `${siteRoot}#org` },
+  },
+  ...structuredData,
+];
+---
+
+<!doctype html>
+<html lang={def.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {
+      alternates &&
+        LOCALES.map((l) => (
+          <link rel="alternate" hreflang={l.htmlLang} href={absoluteUrl(localePath(l.slug, page), Astro.site)} />
+        ))
+    }
+    {alternates && <link rel="alternate" hreflang="x-default" href={absoluteUrl(localePath(DEFAULT_LOCALE, page), Astro.site)} />}
+
+    <meta name="theme-color" content="#060708" />
+    <link rel="icon" href={withBase('/favicon.ico')} sizes="48x48" />
+    <link rel="icon" href={withBase('/favicon.png')} type="image/png" />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
+    <link rel="manifest" href={withBase('/manifest.webmanifest')} />
+
+    <!-- Safari Smart App Banner: one-tap install, credited to this site as Web Referrer in App Store Connect. -->
+    <meta name="apple-itunes-app" content={`app-id=${STORE.appStoreId}`} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={SITE.storeName} />
+    <meta property="og:locale" content={def.ogLocale} />
+    {alternates && LOCALES.filter((l) => l.slug !== locale).map((l) => <meta property="og:locale:alternate" content={l.ogLocale} />)}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
+    <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })} />
+
+    {
+      SITE.gaMeasurementId && (
+        <>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.gaMeasurementId}`} />
+          <script is:inline define:vars={{ id: SITE.gaMeasurementId }}>
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function gtag() {
+              window.dataLayer.push(arguments);
+            };
+            window.gtag('js', new Date());
+            window.gtag('config', id, {
+              allow_google_signals: false,
+              allow_ad_personalization_signals: false,
+            });
+          </script>
+        </>
+      )
+    }
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{dict.nav.skip}</a>
+    <slot />
+  </body>
+</html>

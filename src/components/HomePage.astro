@@ -1,0 +1,446 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import StoreBadges from './StoreBadges.astro';
+import LoopDemo from './LoopDemo.astro';
+import { SITE, STORE } from '../config/site';
+import { getLocale, localePath, t, type LocaleSlug } from '../i18n';
+import { absoluteUrl, withBase } from '../lib/paths';
+import { appStoreUrl, playStoreUrl } from '../lib/storeLinks';
+import { POSES } from '../scripts/choreography';
+
+interface Props {
+  locale: LocaleSlug;
+}
+
+const { locale } = Astro.props;
+const def = getLocale(locale);
+const d = t(locale);
+const faq = d.faq.items.filter((item) => SITE.playEnabled || !item.android);
+const pageUrl = absoluteUrl(localePath(locale), Astro.site);
+
+const structuredData = [
+  {
+    '@type': 'MobileApplication',
+    name: SITE.storeName,
+    alternateName: SITE.name,
+    description: d.meta.description,
+    url: pageUrl,
+    image: absoluteUrl('/icons/icon-512.png', Astro.site),
+    operatingSystem: SITE.playEnabled ? 'iOS, Android' : 'iOS',
+    applicationCategory: SITE.appCategory,
+    applicationSubCategory: 'Dance practice',
+    inLanguage: def.htmlLang,
+    installUrl: [appStoreUrl(STORE), ...(SITE.playEnabled ? [playStoreUrl(STORE)] : [])],
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': `${absoluteUrl('/', Astro.site)}#org` },
+  },
+  {
+    '@type': 'FAQPage',
+    inLanguage: def.htmlLang,
+    mainEntity: faq.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  },
+];
+---
+
+<BaseLayout locale={locale} title={d.meta.title} description={d.meta.description} alternates structuredData={structuredData}>
+  <SiteHeader locale={locale} />
+
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <h1 id="hero-title" class="hero__title">{d.hero.title}</h1>
+      <div class="hero__copy">
+        <p class="lede">{d.hero.lede}</p>
+        <StoreBadges locale={locale} placement="hero" />
+        <p class="hero__trial muted">{d.hero.trial}</p>
+      </div>
+      <div class="hero__demo">
+        <LoopDemo locale={locale} />
+      </div>
+    </section>
+
+    <section class="steps wrap" aria-labelledby="steps-title">
+      <h2 id="steps-title">{d.steps.title}</h2>
+      <ol class="steps__list">
+        {
+          d.steps.items.map((step) => (
+            <li>
+              <h3>{step.title}</h3>
+              <p class="muted">{step.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="details wrap" aria-labelledby="details-title">
+      <h2 id="details-title">{d.details.title}</h2>
+      <dl class="details__list">
+        {
+          d.details.items.map((item) => (
+            <div>
+              <dt>{item.title}</dt>
+              <dd class="muted">{item.body}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="gestures wrap" aria-labelledby="gestures-title">
+      <div class="gestures__copy">
+        <h2 id="gestures-title">{d.gestures.title}</h2>
+        <p class="muted">{d.gestures.body}</p>
+      </div>
+      <ul class="gestures__poses">
+        {
+          POSES.map((pose, i) => (
+            <li>
+              <img src={withBase(`/img/pose-${pose}.webp`)} alt="" width="384" height="414" loading="lazy" />
+              <span>{d.gestures.poses[i]}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="styles wrap" aria-labelledby="styles-title">
+      <h2 id="styles-title">{d.styles.title}</h2>
+      <p class="styles__body">{d.styles.body}</p>
+    </section>
+
+    <section class="story wrap" aria-labelledby="story-title">
+      <h2 id="story-title">{d.story.title}</h2>
+      <blockquote>
+        <p>{d.story.body}</p>
+        <footer class="muted">{d.story.signature}</footer>
+      </blockquote>
+    </section>
+
+    <section class="faq wrap" aria-labelledby="faq-title">
+      <h2 id="faq-title">{d.faq.title}</h2>
+      <div class="faq__list">
+        {
+          faq.map((item) => (
+            <details>
+              <summary>{item.q}</summary>
+              <p class="muted">{item.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="cta wrap" aria-labelledby="cta-title">
+      <h2 id="cta-title">{d.cta.title}</h2>
+      <p class="muted">{d.cta.body}</p>
+      <StoreBadges locale={locale} placement="cta" />
+    </section>
+  </main>
+
+  <SiteFooter locale={locale} />
+</BaseLayout>
+
+<script>
+  import { initStoreLinks } from '../scripts/store-links';
+
+  initStoreLinks();
+</script>
+
+<style>
+  main > section {
+    padding-block: clamp(3.5rem, 8vw, 6.5rem);
+  }
+
+  main > section + section {
+    border-top: 1px solid var(--rule);
+  }
+
+  /* Hero ------------------------------------------------------------------ */
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    padding-top: clamp(1.5rem, 4vw, 3rem) !important;
+  }
+
+  .hero__title {
+    font-size: var(--step-4);
+    font-weight: 850;
+    font-stretch: 122%;
+    line-height: 0.96;
+    letter-spacing: -0.025em;
+    max-width: 14ch;
+  }
+
+  :global(:lang(ja)) .hero__title,
+  :global(:lang(ko)) .hero__title,
+  :global(:lang(zh-Hans)) .hero__title {
+    max-width: 16em;
+    font-size: clamp(2rem, 1.2rem + 3.6vw, 3.8rem);
+    line-height: 1.2;
+  }
+
+  .hero__copy {
+    display: grid;
+    gap: 1.75rem;
+    align-content: start;
+  }
+
+  .hero__trial {
+    font-size: var(--step--1);
+    max-width: 40ch;
+  }
+
+  @media (min-width: 900px) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      column-gap: clamp(2rem, 5vw, 4.5rem);
+    }
+
+    .hero__title {
+      grid-column: 1 / -1;
+    }
+
+    .hero__copy {
+      padding-top: 0.5rem;
+    }
+  }
+
+  /* Steps: a real sequence, so it is numbered. ----------------------------- */
+
+  .steps__list {
+    list-style: none;
+    counter-reset: step;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 2rem;
+  }
+
+  .steps__list li {
+    counter-increment: step;
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+  }
+
+  .steps__list li::before {
+    content: counter(step);
+    font-size: var(--step-3);
+    font-weight: 900;
+    font-stretch: 62%;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--haze);
+  }
+
+  @media (min-width: 760px) {
+    .steps__list {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* Details ---------------------------------------------------------------- */
+
+  .details {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .details__list {
+    margin: 0;
+    display: grid;
+  }
+
+  .details__list > div {
+    display: grid;
+    gap: 0.35rem 2rem;
+    padding-block: 1.25rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .details__list dt {
+    font-weight: 700;
+    font-stretch: 108%;
+    font-size: var(--step-1);
+    line-height: 1.25;
+  }
+
+  .details__list dd {
+    margin: 0;
+    max-width: var(--measure);
+  }
+
+  @media (min-width: 900px) {
+    .details {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+    }
+
+    .details h2 {
+      position: sticky;
+      top: 2rem;
+      align-self: start;
+    }
+
+    .details__list > div {
+      grid-template-columns: 13rem minmax(0, 1fr);
+    }
+  }
+
+  /* Gestures --------------------------------------------------------------- */
+
+  .gestures {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .gestures__copy {
+    display: grid;
+    gap: 1rem;
+    max-width: 46ch;
+  }
+
+  .gestures__poses {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(0.5rem, 2vw, 1.5rem);
+  }
+
+  .gestures__poses li {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: center;
+    text-align: center;
+    font-size: var(--step--1);
+    color: var(--haze);
+  }
+
+  @media (min-width: 900px) {
+    .gestures {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      align-items: center;
+    }
+  }
+
+  /* Styles ----------------------------------------------------------------- */
+
+  .styles {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .styles__body {
+    font-size: var(--step-2);
+    line-height: 1.35;
+    font-stretch: 104%;
+    max-width: 38ch;
+    color: var(--haze);
+  }
+
+  /* Story ------------------------------------------------------------------ */
+
+  .story {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .story blockquote {
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+    max-width: 60ch;
+    font-size: var(--step-1);
+    line-height: 1.55;
+  }
+
+  .story blockquote footer {
+    font-size: var(--step-0);
+  }
+
+  @media (min-width: 900px) {
+    .story {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    }
+  }
+
+  /* FAQ -------------------------------------------------------------------- */
+
+  .faq {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .faq__list {
+    max-width: 52rem;
+  }
+
+  .faq details {
+    border-top: 1px solid var(--rule);
+  }
+
+  .faq details:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .faq summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.1rem;
+    font-weight: 650;
+    font-size: var(--step-1);
+    line-height: 1.3;
+  }
+
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq summary::after {
+    content: '+';
+    flex: none;
+    font-weight: 400;
+    color: var(--haze);
+    transition: rotate 160ms ease;
+  }
+
+  .faq details[open] summary::after {
+    rotate: 45deg;
+  }
+
+  .faq details p {
+    padding-bottom: 1.25rem;
+    max-width: var(--measure);
+  }
+
+  /* CTA -------------------------------------------------------------------- */
+
+  .cta {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+  }
+
+  .cta h2 {
+    font-size: var(--step-4);
+    max-width: 16ch;
+  }
+
+  :global(:lang(ja)) .cta h2,
+  :global(:lang(ko)) .cta h2,
+  :global(:lang(zh-Hans)) .cta h2 {
+    font-size: var(--step-3);
+  }
+</style>
