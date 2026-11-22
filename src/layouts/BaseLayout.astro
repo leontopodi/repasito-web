@@ -89,6 +89,15 @@ const graph = [
     <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })} />
 
     {
+      SITE.cloudflareBeaconToken && (
+        <script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={JSON.stringify({ token: SITE.cloudflareBeaconToken })}
+        />
+      )
+    }
+    {
       SITE.gaMeasurementId && (
         <>
           <script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.gaMeasurementId}`} />

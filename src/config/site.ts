@@ -29,7 +29,9 @@ export const SITE = {
   appCategory: 'HealthApplication',
   /** Show the Google Play badge and Android copy. */
   playEnabled: flag(import.meta.env.PUBLIC_PLAY_ENABLED, true),
-  /** GA4 measurement ID (G-XXXXXXX). Analytics are not loaded when unset. */
+  /** Cloudflare Web Analytics beacon token: cookieless page-view analytics. Not loaded when unset. */
+  cloudflareBeaconToken: optional(import.meta.env.PUBLIC_CF_BEACON_TOKEN),
+  /** GA4 measurement ID (G-XXXXXXX). Sets cookies; not loaded when unset. */
   gaMeasurementId: optional(import.meta.env.PUBLIC_GA_MEASUREMENT_ID),
   social: [
     { name: 'Instagram', url: 'https://www.instagram.com/repasito/' },

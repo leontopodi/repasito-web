@@ -2,7 +2,7 @@
 
 Marketing website for RePasito, served at https://repasito.app from GitHub Pages.
 
-Static [Astro](https://astro.build) site in the 11 languages the app ships in. It sets no cookies and stores nothing in the browser.
+Static [Astro](https://astro.build) site in the 11 languages the app ships in. It sets no cookies and stores nothing in the browser. Visits are counted with Cloudflare Web Analytics, which is cookieless.
 
 ## Develop
 
@@ -23,7 +23,8 @@ GitHub Pages configuration and the repository's **Actions variables**:
 | --- | --- | --- |
 | `SITE_URL`, `BASE_PATH` | Pages settings (custom domain) | Canonical URLs, hreflang, sitemap |
 | `APPLE_PROVIDER_TOKEN` | Actions variable | Adds `pt`/`ct` campaign parameters to App Store links |
-| `GA_MEASUREMENT_ID` | Actions variable | Loads GA4 (sets cookies; leave unset for none) |
+| `CF_BEACON_TOKEN` | Actions variable | Cloudflare Web Analytics (cookieless page views, referrers, countries) |
+| `GA_MEASUREMENT_ID` | Actions variable | Loads GA4 (sets cookies, which needs a consent banner; leave unset) |
 | `PLAY_ENABLED` | Actions variable, default `true` | Shows the Google Play badge and Android copy |
 
 To change the domain, set it under **Settings → Pages → Custom domain**. The site needs no code change.
