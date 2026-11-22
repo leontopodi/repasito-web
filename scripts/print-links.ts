@@ -3,7 +3,7 @@
  *
  *   npm run links -- [--site https://repasito.app] [--pt <apple provider token>] [--csv]
  *
- * PUBLIC_APPLE_PROVIDER_TOKEN and SITE_URL are used when the flags are omitted.
+ * Defaults: SITE_URL or https://repasito.app, and RePasito's Apple provider token.
  */
 import { parseArgs } from 'node:util';
 import { CAMPAIGNS } from '../src/config/campaigns.ts';
@@ -12,7 +12,7 @@ import { appStoreUrl, playStoreUrl } from '../src/lib/storeLinks.ts';
 const { values } = parseArgs({
   options: {
     site: { type: 'string', default: process.env.SITE_URL ?? 'https://repasito.app' },
-    pt: { type: 'string', default: process.env.PUBLIC_APPLE_PROVIDER_TOKEN ?? '' },
+    pt: { type: 'string', default: process.env.PUBLIC_APPLE_PROVIDER_TOKEN ?? '128847862' },
     csv: { type: 'boolean', default: false },
   },
 });
