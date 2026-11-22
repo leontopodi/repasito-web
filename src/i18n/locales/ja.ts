@@ -74,5 +74,18 @@ export const ja: Dict = {
     title: '次の練習は、8カウントから。',
     body: 'iPhone・Androidで無料ダウンロード。',
   },
+  support: {
+    description: 'RePasitoのサポート：お問い合わせ先、RePasito Proの復元と管理、よくある質問への回答。',
+    contact: 'お困りのことやご質問、ご意見は {email} までお寄せください。',
+    tip: 'お使いの機種と、問題が起きたときの操作を書き添えていただけると助かります。アプリからも送信できます。「設定」を開いて「フィードバックを送信」（Send feedback）をタップしてください。',
+    purchasesTitle: 'RePasito Proの購入について',
+    purchases: {
+      restore: { title: 'Proを復元する', body: 'アプリで「設定」→「RePasito Pro」を開き、「購入を復元」（Restore Purchases）をタップします。Proを購入したときと同じストアのアカウントを使ってください。' },
+      iphone: { title: 'iPhoneで管理・解約する', body: '「設定」アプリを開き、自分の名前、「サブスクリプション」の順にタップします。' },
+      android: { title: 'Androidで管理・解約する', body: 'Google Playを開き、プロフィール写真、「お支払いと定期購入」の順にタップします。' },
+      refunds: { title: '返金', body: '請求と返金は、Proを購入したストアが対応します。' },
+    },
+  },
+  privacy: { title: 'プライバシーポリシー', description: 'iPhone版・Android版のRePasitoとウェブサイトrepasito.appにおけるデータの取り扱いについて。' },
   footer: { privacy: 'プライバシーポリシー', support: 'サポート', languages: '言語' },
 };

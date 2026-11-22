@@ -74,5 +74,18 @@ export const it: Dict = {
     title: 'Il tuo prossimo allenamento inizia da 8 tempi.',
     body: 'Gratis per iPhone e Android.',
   },
+  support: {
+    description: 'Assistenza per RePasito: contatti, come ripristinare o gestire RePasito Pro e risposte alle domande più comuni.',
+    contact: 'Per aiuto, domande o feedback scrivi a {email}.',
+    tip: 'È utile sapere che telefono usi e cosa stavi facendo quando è comparso il problema. Puoi scrivere anche dall’app: apri Impostazioni e tocca «Invia feedback» (Send feedback).',
+    purchasesTitle: 'Acquisti di RePasito Pro',
+    purchases: {
+      restore: { title: 'Ripristinare Pro', body: 'Nell’app apri Impostazioni, poi RePasito Pro, e tocca «Ripristina gli acquisti» (Restore Purchases). Usa l’account dello store con cui hai acquistato Pro.' },
+      iphone: { title: 'Gestire o annullare su iPhone', body: 'Apri l’app Impostazioni, tocca il tuo nome e poi Abbonamenti.' },
+      android: { title: 'Gestire o annullare su Android', body: 'Apri Google Play, tocca la tua immagine del profilo e poi Pagamenti e abbonamenti.' },
+      refunds: { title: 'Rimborsi', body: 'Fatturazione e rimborsi sono gestiti dallo store in cui hai acquistato Pro.' },
+    },
+  },
+  privacy: { title: 'Informativa sulla privacy', description: 'Come RePasito per iPhone e Android e il sito repasito.app trattano i tuoi dati.' },
   footer: { privacy: 'Informativa sulla privacy', support: 'Assistenza', languages: 'Lingue' },
 };

@@ -1,0 +1,115 @@
+---
+/**
+ * The support page in one language. The apps' Support links and the store listings' support URLs point to it.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FaqList from './FaqList.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import { SITE } from '../config/site';
+import { t, type LocaleSlug } from '../i18n';
+import { faqItems } from '../lib/faq';
+
+interface Props {
+  locale: LocaleSlug;
+}
+
+const { locale } = Astro.props;
+const d = t(locale);
+const { restore, iphone, android, refunds } = d.support.purchases;
+const purchases = [restore, iphone, ...(SITE.playEnabled ? [android] : []), refunds];
+const [beforeEmail, afterEmail = ''] = d.support.contact.split('{email}');
+---
+
+<BaseLayout
+  locale={locale}
+  page="support"
+  alternates
+  title={`${d.footer.support} – ${SITE.name}`}
+  description={d.support.description}
+  image={`/og/${locale}.jpg`}
+  imageAlt={d.meta.storeName}>
+  <SiteHeader locale={locale} page="support" />
+  <main id="main" class="support wrap">
+    <h1>{d.footer.support}</h1>
+    <p class="support__contact">{beforeEmail}<a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a>{afterEmail}</p>
+    <p class="muted">{d.support.tip}</p>
+
+    <section aria-labelledby="purchases-title">
+      <h2 id="purchases-title">{d.support.purchasesTitle}</h2>
+      <dl>
+        {
+          purchases.map((item) => (
+            <div>
+              <dt>{item.title}</dt>
+              <dd class="muted">{item.body}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section aria-labelledby="questions-title">
+      <h2 id="questions-title">{d.faq.title}</h2>
+      <FaqList items={faqItems(d)} locale={locale} />
+    </section>
+  </main>
+  <SiteFooter locale={locale} page="support" />
+</BaseLayout>
+
+<style>
+  .support {
+    max-width: 46rem;
+    padding-block: 2rem 5rem;
+  }
+
+  h1 {
+    font-size: var(--step-3);
+    margin-bottom: 1.5rem;
+  }
+
+  .support__contact {
+    font-size: var(--step-1);
+    line-height: 1.45;
+    margin-bottom: 0.75rem;
+  }
+
+  section {
+    margin-top: 3rem;
+    display: grid;
+    gap: 1rem;
+  }
+
+  h2 {
+    font-size: var(--step-2);
+  }
+
+  dl {
+    margin: 0;
+  }
+
+  dl > div {
+    display: grid;
+    gap: 0.25rem 2rem;
+    padding-block: 1rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  dl > div:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  dt {
+    font-weight: 650;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    dl > div {
+      grid-template-columns: 15rem minmax(0, 1fr);
+    }
+  }
+</style>

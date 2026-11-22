@@ -74,5 +74,18 @@ export const de: Dict = {
     title: 'Dein nächstes Training fängt mit einem Achter an.',
     body: 'Kostenlos für iPhone und Android.',
   },
+  support: {
+    description: 'Hilfe zu RePasito: Kontakt, RePasito Pro wiederherstellen oder verwalten und Antworten auf häufige Fragen.',
+    contact: 'Bei Fragen, Problemen oder Feedback schreib an {email}.',
+    tip: 'Am besten schreibst du dazu, welches Handy du nutzt und was du gerade gemacht hast, als das Problem auftrat. Du kannst auch direkt aus der App schreiben: Öffne die Einstellungen und tippe auf „Feedback senden“ (Send feedback).',
+    purchasesTitle: 'Käufe von RePasito Pro',
+    purchases: {
+      restore: { title: 'Pro wiederherstellen', body: 'Öffne in der App die Einstellungen, dann RePasito Pro, und tippe auf „Einkäufe wiederherstellen“ (Restore Purchases). Nutze das Store-Konto, mit dem du Pro gekauft hast.' },
+      iphone: { title: 'Auf dem iPhone verwalten oder kündigen', body: 'Öffne die App „Einstellungen“, tippe auf deinen Namen und dann auf „Abonnements“.' },
+      android: { title: 'Auf Android verwalten oder kündigen', body: 'Öffne Google Play, tippe auf dein Profilbild und dann auf „Zahlungen und Abos“.' },
+      refunds: { title: 'Erstattungen', body: 'Abrechnung und Erstattungen laufen über den Store, in dem du Pro gekauft hast.' },
+    },
+  },
+  privacy: { title: 'Datenschutzerklärung', description: 'Wie RePasito für iPhone und Android und die Website repasito.app mit deinen Daten umgehen.' },
   footer: { privacy: 'Datenschutz', support: 'Support', languages: 'Sprachen' },
 };

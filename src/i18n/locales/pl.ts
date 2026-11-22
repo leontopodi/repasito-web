@@ -74,5 +74,18 @@ export const pl: Dict = {
     title: 'Następny trening zacznij od jednej ósemki.',
     body: 'Za darmo na iPhone’a i Androida.',
   },
+  support: {
+    description: 'Pomoc do RePasito: kontakt, przywracanie RePasito Pro i zarządzanie nim oraz odpowiedzi na częste pytania.',
+    contact: 'Masz pytanie, problem albo uwagi? Napisz na {email}.',
+    tip: 'Napisz, jaki masz telefon i co się działo, kiedy pojawił się problem. Możesz też napisać prosto z aplikacji: otwórz Ustawienia i stuknij „Wyślij opinię” (Send feedback).',
+    purchasesTitle: 'Zakupy RePasito Pro',
+    purchases: {
+      restore: { title: 'Przywracanie Pro', body: 'W aplikacji otwórz Ustawienia, potem RePasito Pro i stuknij „Przywróć zakupy” (Restore Purchases). Użyj konta sklepu, na którym kupiono Pro.' },
+      iphone: { title: 'Zarządzanie i anulowanie na iPhonie', body: 'Otwórz aplikację Ustawienia, stuknij swoje imię i nazwisko, a potem Subskrypcje.' },
+      android: { title: 'Zarządzanie i anulowanie na Androidzie', body: 'Otwórz Google Play, kliknij swoje zdjęcie profilowe, a potem Płatności i subskrypcje.' },
+      refunds: { title: 'Zwroty', body: 'Rozliczeniami i zwrotami zajmuje się sklep, w którym kupiono Pro.' },
+    },
+  },
+  privacy: { title: 'Polityka prywatności', description: 'Jak RePasito na iPhone’a i Androida oraz strona repasito.app obchodzą się z twoimi danymi.' },
   footer: { privacy: 'Polityka prywatności', support: 'Pomoc', languages: 'Języki' },
 };

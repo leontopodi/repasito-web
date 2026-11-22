@@ -74,5 +74,18 @@ export const en: Dict = {
     title: 'Your next practice starts with one section.',
     body: 'Free to download for iPhone and Android.',
   },
+  support: {
+    description: 'Get help with RePasito: how to contact us, restore or manage RePasito Pro, and answers to common questions.',
+    contact: 'For help, questions or feedback, write to {email}.',
+    tip: 'It helps to mention your phone model and what you were doing when the problem appeared. You can also write from the app: open Settings and tap Send feedback.',
+    purchasesTitle: 'RePasito Pro purchases',
+    purchases: {
+      restore: { title: 'Restore Pro', body: 'In the app, open Settings, then RePasito Pro, and tap Restore Purchases. Use the store account you bought Pro with.' },
+      iphone: { title: 'Manage or cancel on iPhone', body: 'Open the Settings app, tap your name, then Subscriptions.' },
+      android: { title: 'Manage or cancel on Android', body: 'Open Google Play, tap your profile picture, then Payments & subscriptions.' },
+      refunds: { title: 'Refunds', body: 'The store you bought Pro from handles billing and refunds.' },
+    },
+  },
+  privacy: { title: 'Privacy Policy', description: 'How RePasito for iPhone and Android, and the repasito.app website, handle your data.' },
   footer: { privacy: 'Privacy policy', support: 'Support', languages: 'Languages' },
 };

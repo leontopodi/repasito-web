@@ -74,5 +74,18 @@ export const zhHans: Dict = {
     title: '下一次练舞，从一个八拍开始。',
     body: 'iPhone 和 Android 均可免费下载。',
   },
+  support: {
+    description: 'RePasito 支持：联系方式、恢复或管理 RePasito Pro，以及常见问题解答。',
+    contact: '需要帮助、有疑问或想提建议，请发邮件到 {email}。',
+    tip: '请告诉我们你的手机型号，以及出现问题时你正在做什么。也可以直接在 App 里联系我们：打开“设置”，轻点“发送反馈”（Send feedback）。',
+    purchasesTitle: 'RePasito Pro 购买',
+    purchases: {
+      restore: { title: '恢复 Pro', body: '在 App 中打开“设置”→“RePasito Pro”，然后轻点“恢复购买”（Restore Purchases）。请使用购买 Pro 时所用的商店账号。' },
+      iphone: { title: '在 iPhone 上管理或取消', body: '打开“设置”App，轻点你的姓名，然后轻点“订阅”。' },
+      android: { title: '在 Android 上管理或取消', body: '打开 Google Play，轻点你的头像，然后轻点“付款和订阅”。' },
+      refunds: { title: '退款', body: '账单和退款由你购买 Pro 的应用商店处理。' },
+    },
+  },
+  privacy: { title: '隐私政策', description: 'iPhone 版和 Android 版 RePasito 以及 repasito.app 网站如何处理你的数据。' },
   footer: { privacy: '隐私政策', support: '联系支持', languages: '语言' },
 };

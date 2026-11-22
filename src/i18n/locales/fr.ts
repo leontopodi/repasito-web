@@ -74,5 +74,18 @@ export const fr: Dict = {
     title: 'Ta prochaine séance commence par 8 temps.',
     body: 'Gratuit sur iPhone et Android.',
   },
+  support: {
+    description: 'Aide pour RePasito : contact, restauration et gestion de RePasito Pro, réponses aux questions fréquentes.',
+    contact: 'Pour une question, un problème ou un retour, écris à {email}.',
+    tip: 'Indique ton modèle de téléphone et ce que tu faisais quand le problème est apparu, ça nous aide. Tu peux aussi écrire depuis l’app : ouvre Paramètres et touche « Envoyer un commentaire » (Send feedback).',
+    purchasesTitle: 'Achats RePasito Pro',
+    purchases: {
+      restore: { title: 'Restaurer Pro', body: 'Dans l’app, ouvre Paramètres, puis RePasito Pro, et touche « Restaurer les achats » (Restore Purchases). Utilise le compte de la boutique avec lequel tu as acheté Pro.' },
+      iphone: { title: 'Gérer ou annuler sur iPhone', body: 'Ouvre l’app Réglages, touche ton nom, puis Abonnements.' },
+      android: { title: 'Gérer ou annuler sur Android', body: 'Ouvre Google Play, touche ta photo de profil, puis Paiements et abonnements.' },
+      refunds: { title: 'Remboursements', body: 'La facturation et les remboursements sont gérés par la boutique où tu as acheté Pro.' },
+    },
+  },
+  privacy: { title: 'Politique de confidentialité', description: 'Comment RePasito pour iPhone et Android et le site repasito.app traitent tes données.' },
   footer: { privacy: 'Politique de confidentialité', support: 'Assistance', languages: 'Langues' },
 };

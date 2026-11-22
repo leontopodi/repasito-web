@@ -75,5 +75,18 @@ export const esEs: Dict = {
     title: 'Tu próximo ensayo empieza con 8 tiempos.',
     body: 'Gratis para iPhone y Android.',
   },
+  support: {
+    description: 'Ayuda con RePasito: contacto, cómo restaurar o gestionar RePasito Pro y respuestas a las preguntas más habituales.',
+    contact: 'Si necesitas ayuda o tienes preguntas o comentarios, escribe a {email}.',
+    tip: 'Ayuda mucho que nos digas qué móvil usas y qué estabas haciendo cuando apareció el problema. También puedes escribirnos desde la app: abre Configuración y toca «Enviar comentarios» (Send feedback).',
+    purchasesTitle: 'Compras de RePasito Pro',
+    purchases: {
+      restore: { title: 'Restaurar Pro', body: 'En la app, abre Configuración, luego RePasito Pro y toca «Restaurar compras» (Restore Purchases). Usa la cuenta de la tienda con la que compraste Pro.' },
+      iphone: { title: 'Gestionar o cancelar en iPhone', body: 'Abre la app Ajustes, toca tu nombre y luego Suscripciones.' },
+      android: { title: 'Gestionar o cancelar en Android', body: 'Abre Google Play, toca tu foto de perfil y luego Pagos y suscripciones.' },
+      refunds: { title: 'Reembolsos', body: 'La facturación y los reembolsos los gestiona la tienda donde compraste Pro.' },
+    },
+  },
+  privacy: { title: 'Política de privacidad', description: 'Cómo tratan tus datos RePasito para iPhone y Android y el sitio web repasito.app.' },
   footer: { privacy: 'Política de privacidad', support: 'Soporte', languages: 'Idiomas' },
 };

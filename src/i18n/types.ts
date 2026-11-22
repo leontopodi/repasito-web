@@ -61,6 +61,21 @@ export interface Dict {
     title: string;
     body: string;
   };
+  /** Support page. Its heading is `footer.support` and its questions are `faq`. */
+  support: {
+    description: string;
+    /** `{email}` becomes the linked support address. */
+    contact: string;
+    tip: string;
+    purchasesTitle: string;
+    /** In-app labels are given as the iPhone app shows them, followed by the English label the Android app shows. */
+    purchases: Record<'restore' | 'iphone' | 'android' | 'refunds', { title: string; body: string }>;
+  };
+  /** Privacy policy page. The policy text itself is src/content/privacy/<locale>.html. */
+  privacy: {
+    title: string;
+    description: string;
+  };
   footer: {
     privacy: string;
     support: string;

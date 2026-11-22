@@ -9,7 +9,7 @@ Static [Astro](https://astro.build) site with one page per App Store listing: 11
 ```sh
 npm ci
 npm run dev       # http://localhost:4321
-npm test          # unit tests (store links, platform routing, screenshot files)
+npm test          # unit tests (store links, platform routing, screenshot files, privacy policy translations)
 npm run check     # type check
 npm run build     # static output in dist/
 ```
@@ -77,7 +77,7 @@ The captions printed on the screenshots are the `screens` strings of each langua
 - Copy: `src/i18n/locales/<locale>.ts`. The `Dict` type makes the compiler reject a locale with a missing key.
   Each language is written in the voice of its App Store listing, not translated from English: informal address (du, tu, ty, ты) and dancers' own words (Achter, ósemka, 8 tiempos, восьмёрка, 8カウント). `meta.storeName` is the app name exactly as on that store listing.
 - Japanese and Chinese headings are split into phrases at build time (BudouX) so they never wrap mid-word.
-- Privacy policy: `src/content/privacy.html` (English, canonical at `/privacy/`).
-- Support page: `src/pages/support.astro` (English, at `/support/`). The apps' Support links and the store listings' support URLs point to it.
+- Privacy policy: one HTML file per language in `src/content/privacy/`, served at `/privacy/` and `/<locale>/privacy/`. `en.html` is the authoritative text; the others are translations and say so in a note at the top. When the English policy changes, update its `<time datetime>` and every translation: a test fails while a translation's date, sections or links differ from the English file.
+- Support page: `src/components/SupportPage.astro`, served at `/support/` and `/<locale>/support/`, with its copy under `support` in each locale file. The apps' Support links and the store listings' support URLs point to it.
 - Store badges: CI downloads the official localized artwork (`npm run badges`). If a download fails, the badge falls back to a text button.
 - Pose artwork and icons come from the app's asset catalog (`dance-app/RePasito/Resources/Assets.xcassets`).

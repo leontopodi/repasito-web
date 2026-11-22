@@ -5,24 +5,26 @@ import { withBase } from '../lib/paths';
 
 interface Props {
   locale: LocaleSlug;
+  /** Page path without locale prefix, for a page that exists in every locale; language links then stay on that page. */
+  page?: string;
 }
 
-const { locale } = Astro.props;
+const { locale, page = '' } = Astro.props;
 const dict = t(locale);
 const year = new Date().getFullYear();
 ---
 
 <footer class="footer wrap">
   <nav class="footer__links" aria-label="RePasito">
-    <a href={withBase('/privacy/')}>{dict.footer.privacy}</a>
-    <a href={withBase('/support/')}>{dict.footer.support}</a>
+    <a href={withBase(localePath(locale, 'privacy'))}>{dict.footer.privacy}</a>
+    <a href={withBase(localePath(locale, 'support'))}>{dict.footer.support}</a>
     {SITE.social.map((s) => <a href={s.url} rel="me noopener">{s.name}</a>)}
   </nav>
 
   <nav class="footer__langs" aria-label={dict.footer.languages}>
     {
       LOCALES.map((l) => (
-        <a href={withBase(localePath(l.slug))} hreflang={l.htmlLang} lang={l.htmlLang} aria-current={l.slug === locale ? 'page' : undefined}>
+        <a href={withBase(localePath(l.slug, page))} hreflang={l.htmlLang} lang={l.htmlLang} aria-current={l.slug === locale ? 'page' : undefined}>
           {l.nativeName}
         </a>
       ))
