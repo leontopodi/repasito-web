@@ -49,7 +49,7 @@ export const fr: Dict = {
   },
   styles: {
     title: 'Pour tous les styles qui se dansent en musique',
-    body: 'Bachata, salsa, kizomba, zouk, kompa, merengue, reggaeton, dancehall, afro, hip-hop, popping, locking, breaking, krump, house, waacking, voguing, K-pop, heels, commercial, contemporain, jazz, classique, claquettes, flamenco, tango, swing, lindy hop, danse orientale, Bollywood, country. Si vous l’apprenez sur une vidéo ou en comptant les temps, vous pouvez le boucler.',
+    body: 'Bachata, salsa, kizomba, zouk, kompa, merengue, forró, samba, reggaeton, dancehall, afrobeats, hip-hop, popping, locking, breakdance, krump, house, waacking, voguing, K-pop, heels, commercial, contemporain, jazz, classique, claquettes, flamenco, tango, swing, lindy hop, danse orientale, Bollywood, country. Si vous l’apprenez sur une vidéo ou en comptant les temps, vous pouvez le boucler.',
   },
   story: {
     title: 'Pourquoi RePasito existe',

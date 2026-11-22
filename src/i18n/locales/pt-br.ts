@@ -49,7 +49,7 @@ export const ptBr: Dict = {
   },
   styles: {
     title: 'Para todo estilo que você treina com música',
-    body: 'Bachata, salsa, kizomba, zouk, forró, samba, funk, axé, pagode, reggaeton, dancehall, afro, hip hop, popping, locking, breaking, krump, house, waacking, voguing, K-pop, heels, commercial, contemporâneo, jazz, balé, sapateado, flamenco, tango, swing, dança do ventre, Bollywood. Se você aprende por vídeo ou contando tempos, dá para repetir.',
+    body: 'Bachata, salsa, kizomba, zouk, forró, samba, funk, axé, pagode, reggaeton, dancehall, afrobeats, hip hop, popping, locking, breakdance, krump, house, waacking, voguing, K-pop, heels, commercial, contemporâneo, jazz, balé, sapateado, flamenco, tango, swing, dança do ventre, Bollywood. Se você aprende por vídeo ou contando tempos, dá para repetir.',
   },
   story: {
     title: 'Por que o RePasito existe',

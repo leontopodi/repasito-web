@@ -49,7 +49,7 @@ export const en: Dict = {
   },
   styles: {
     title: 'For every style you practice to music',
-    body: 'Bachata, salsa, kizomba, zouk, merengue, reggaeton, dancehall, afro, hip hop, popping, locking, breaking, krump, house, waacking, voguing, K-pop, heels, commercial, contemporary, jazz, lyrical, ballet, tap, flamenco, tango, swing, lindy hop, belly dance, Bollywood, line dance. If you learn it from a video or on counts, you can loop it.',
+    body: 'Bachata, salsa, kizomba, zouk, merengue, forró, samba, reggaeton, dancehall, afrobeats, hip hop, popping, locking, breakdance, krump, house, waacking, voguing, K-pop, heels, commercial, contemporary, jazz, lyrical, ballet, tap, flamenco, tango, swing, lindy hop, belly dance, Bollywood, line dance. If you learn it from a video or on counts, you can loop it.',
   },
   story: {
     title: 'Why RePasito exists',

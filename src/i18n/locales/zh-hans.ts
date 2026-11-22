@@ -49,7 +49,7 @@ export const zhHans: Dict = {
   },
   styles: {
     title: '适合所有随音乐起舞的舞种',
-    body: 'K-pop、街舞、Hip-hop、Popping、Locking、Breaking、Krump、House、Waacking、Voguing、爵士、Jazz Funk、Heels、现代舞、芭蕾、中国舞、民族舞、古典舞、踢踏舞、肚皮舞、弗拉明戈、巴恰塔、萨尔萨、基宗巴、Zouk、雷鬼动、探戈、摇摆舞、林迪舞、宝莱坞、广场舞。只要是跟着视频或数拍学的舞，都可以循环练习。',
+    body: 'K-pop、街舞、Hip-hop、Popping、Locking、霹雳舞、Krump、House、Waacking、Voguing、爵士、Jazz Funk、Heels、现代舞、芭蕾、中国舞、民族舞、古典舞、踢踏舞、肚皮舞、弗拉明戈、巴恰塔、萨尔萨、基宗巴、Zouk、雷鬼动、Afrobeats、桑巴、Forró、探戈、摇摆舞、林迪舞、宝莱坞、广场舞。只要是跟着视频或数拍学的舞，都可以循环练习。',
   },
   story: {
     title: '为什么会有 RePasito',

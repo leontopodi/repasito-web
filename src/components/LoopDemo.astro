@@ -81,6 +81,7 @@ const groupName = `speed-${Math.random().toString(36).slice(2, 8)}`;
     background: var(--stage);
     border-radius: var(--radius-l);
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
     user-select: none;
     -webkit-user-select: none;
@@ -185,6 +186,7 @@ const groupName = `speed-${Math.random().toString(36).slice(2, 8)}`;
 
   .demo__controls {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: clamp(0.4rem, 1.5vw, 0.75rem);
     margin-top: 0.25rem;

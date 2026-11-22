@@ -6,12 +6,12 @@ export const POSES = ['raised-hand', 't-pose', 'arms-overhead', 'hands-on-head']
 
 export const COUNTS = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 
-export const SPEEDS = [0.5, 0.75, 1] as const;
+export const SPEEDS = [0.5, 0.75, 1, 2] as const;
 
 /** One eight-count phrase spans two launch-dance grooves: one hip bounce per count. */
 export const COUNT_SECONDS = (2 * GROOVE_SECONDS) / COUNTS.length;
 
-export const DEFAULT_LOOP: readonly [number, number] = [3, 6];
+export const DEFAULT_LOOP: readonly [number, number] = [5, 8];
 
 /**
  * Advances the playhead (in counts from the start of count 1) by `seconds` at `speed`,

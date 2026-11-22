@@ -49,7 +49,7 @@ export const pl: Dict = {
   },
   styles: {
     title: 'Do każdego stylu, który ćwiczysz z muzyką',
-    body: 'Bachata, salsa, kizomba, zouk, merengue, reggaeton, dancehall, afro, hip-hop, popping, locking, breaking, krump, house, waacking, voguing, K-pop, heels, commercial, contemporary, jazz, modern, balet, stepowanie, flamenco, tango, swing, lindy hop, taniec brzucha, Bollywood, taniec towarzyski. Jeśli uczysz się z filmu albo na liczenie, możesz to zapętlić.',
+    body: 'Bachata, salsa, kizomba, zouk, merengue, forró, samba, reggaeton, dancehall, afrobeats, hip-hop, popping, locking, breakdance, krump, house, waacking, voguing, K-pop, heels, commercial, contemporary, jazz, modern, balet, stepowanie, flamenco, tango, swing, lindy hop, taniec brzucha, Bollywood, taniec towarzyski. Jeśli uczysz się z filmu albo na liczenie, możesz to zapętlić.',
   },
   story: {
     title: 'Skąd się wzięło RePasito',
