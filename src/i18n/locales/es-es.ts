@@ -25,6 +25,7 @@ export const esEs: Dict = {
     loopEnd: 'Fin del bucle',
   },
   store: { appStore: 'Consíguelo en el App Store', googlePlay: 'Disponible en Google Play' },
+  screens: ['Practícalo en bucle', 'Baja la velocidad', 'Practica una sección', 'Practica con cualquier música', 'Graba cada toma'],
   steps: {
     title: 'Así es un ensayo con RePasito',
     items: [

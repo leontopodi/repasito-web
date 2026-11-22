@@ -25,6 +25,7 @@ export const ko: Dict = {
     loopEnd: '반복 끝 지점',
   },
   store: { appStore: 'App Store에서 다운로드', googlePlay: 'Google Play에서 다운로드' },
+  screens: ['반복하며 연습하세요', '속도를 늦추세요', '한 구간씩 집중 연습', '원하는 음악으로 연습하세요', '모든 테이크를 녹화하세요'],
   steps: {
     title: '이렇게 연습해요',
     items: [

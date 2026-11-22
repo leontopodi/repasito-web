@@ -4,7 +4,9 @@ import SiteHeader from './SiteHeader.astro';
 import SiteFooter from './SiteFooter.astro';
 import StoreBadges from './StoreBadges.astro';
 import LoopDemo from './LoopDemo.astro';
+import ScreenshotStrip from './ScreenshotStrip.astro';
 import Phrased from './Phrased.astro';
+import { LARGEST_SCREENSHOT_WIDTH, SCREENSHOT_PANELS, screenshotHeight, screenshotPath } from '../config/screenshots';
 import { SITE, STORE } from '../config/site';
 import { getLocale, localePath, LOCALES, t, type LocaleSlug } from '../i18n';
 import { absoluteUrl, withBase } from '../lib/paths';
@@ -28,6 +30,14 @@ const stores = [
   ...(SITE.playEnabled ? [{ name: 'Google Play (Android)', url: playStoreUrl(STORE) }] : []),
 ];
 
+const screenshots = SCREENSHOT_PANELS.map((panel, i) => ({
+  '@type': 'ImageObject',
+  url: absoluteUrl(screenshotPath(def.screens, panel, LARGEST_SCREENSHOT_WIDTH), Astro.site),
+  caption: d.screens[i],
+  width: LARGEST_SCREENSHOT_WIDTH,
+  height: screenshotHeight(LARGEST_SCREENSHOT_WIDTH),
+}));
+
 const structuredData = [
   {
     '@type': 'MobileApplication',
@@ -37,6 +47,7 @@ const structuredData = [
     description: d.meta.description,
     url: pageUrl,
     image: absoluteUrl('/icons/icon-512.png', Astro.site),
+    screenshot: screenshots,
     operatingSystem: SITE.playEnabled ? 'iOS, Android' : 'iOS',
     applicationCategory: SITE.appCategory,
     applicationSubCategory: 'Dance practice',
@@ -91,6 +102,10 @@ const structuredData = [
       <div class="hero__demo">
         <LoopDemo locale={locale} />
       </div>
+    </section>
+
+    <section class="screens wrap" aria-label={d.meta.storeName}>
+      <ScreenshotStrip locale={locale} />
     </section>
 
     <section class="steps wrap" aria-labelledby="steps-title">
@@ -198,8 +213,14 @@ const structuredData = [
     padding-block: clamp(3.5rem, 8vw, 6.5rem);
   }
 
-  main > section + section {
+  /* The screenshots continue the hero: no rule and no extra space above them. */
+
+  main > section + section:not(.screens) {
     border-top: 1px solid var(--rule);
+  }
+
+  main > section.screens {
+    padding-top: 0;
   }
 
   /* Hero ------------------------------------------------------------------ */

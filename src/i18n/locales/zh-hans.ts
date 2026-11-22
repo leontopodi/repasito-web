@@ -24,6 +24,7 @@ export const zhHans: Dict = {
     loopEnd: '循环终点',
   },
   store: { appStore: '在 App Store 下载', googlePlay: '在 Google Play 下载' },
+  screens: ['循环播放，反复练习', '放慢速度，看清每一步', '选定一段，专注练习', '随心选择任何音乐', '录下每一遍'],
   steps: {
     title: '这样练',
     items: [

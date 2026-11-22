@@ -1,0 +1,83 @@
+---
+/**
+ * This language's App Store screenshots: a row on wide screens, a strip that scrolls
+ * sideways on narrow ones. Each image's alt text is the caption printed on it.
+ */
+import { LARGEST_SCREENSHOT_WIDTH, SCREENSHOT_PANELS, SCREENSHOT_WIDTHS, screenshotHeight, screenshotPath } from '../config/screenshots';
+import { getLocale, t, type LocaleSlug } from '../i18n';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  locale: LocaleSlug;
+}
+
+const { locale } = Astro.props;
+const { screens: set } = getLocale(locale);
+const captions = t(locale).screens;
+---
+
+<ul class="strip">
+  {
+    SCREENSHOT_PANELS.map((panel, i) => (
+      <li>
+        <img
+          src={withBase(screenshotPath(set, panel, LARGEST_SCREENSHOT_WIDTH))}
+          srcset={SCREENSHOT_WIDTHS.map((width) => `${withBase(screenshotPath(set, panel, width))} ${width}w`).join(', ')}
+          sizes="(min-width: 1180px) 217px, (min-width: 900px) 17vw, min(60vw, 260px)"
+          alt={captions[i]}
+          width={LARGEST_SCREENSHOT_WIDTH}
+          height={screenshotHeight(LARGEST_SCREENSHOT_WIDTH)}
+          loading="lazy"
+          decoding="async"
+        />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  /* Narrow screens: the strip runs to both edges of the viewport and snaps panel by panel. */
+  .strip {
+    list-style: none;
+    margin: 0 calc(var(--gutter) * -1);
+    padding: 0 var(--gutter);
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+
+  .strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .strip li {
+    flex: none;
+    width: min(60vw, 260px);
+    scroll-snap-align: start;
+  }
+
+  .strip img {
+    width: 100%;
+    border-radius: var(--radius-l);
+    background: var(--stage);
+  }
+
+  @media (min-width: 900px) {
+    .strip {
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: clamp(0.75rem, 1.6vw, 1.5rem);
+      overflow: visible;
+    }
+
+    .strip li {
+      width: auto;
+    }
+  }
+</style>

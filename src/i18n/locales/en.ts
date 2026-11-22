@@ -24,6 +24,7 @@ export const en: Dict = {
     loopEnd: 'Loop end',
   },
   store: { appStore: 'Download on the App Store', googlePlay: 'Get it on Google Play' },
+  screens: ['Practice it on loop', 'Slow it down', 'Practice one section', 'Practice to any music', 'Record every take'],
   steps: {
     title: 'How a practice session goes',
     items: [

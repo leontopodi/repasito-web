@@ -9,7 +9,7 @@ Static [Astro](https://astro.build) site with one page per App Store listing: 11
 ```sh
 npm ci
 npm run dev       # http://localhost:4321
-npm test          # unit tests (store links, platform routing)
+npm test          # unit tests (store links, platform routing, screenshot files)
 npm run check     # type check
 npm run build     # static output in dist/
 ```
@@ -49,12 +49,25 @@ npm run links -- --csv # spreadsheet
 
 Token convention: `<channel>_<placement>`, lowercase, at most 40 characters (Apple's limit), e.g. `ig_bio` or `cr_ana` for a creator.
 
+## App Store screenshots
+
+Each home page shows that language's App Store screenshots below the hero: five across on wide screens, a strip that scrolls sideways on narrow ones. Both Spanish pages use the same set.
+
+The WebP files in `public/screens/<set>/` are generated from the store originals. After the store screenshots change:
+
+```sh
+npm run screenshots -- "<path to the 'RePasito App Store screenshots' folder>"
+```
+
+The captions printed on the screenshots are the `screens` strings of each language in `src/i18n/locales/`; they are the images' alt text and their captions in the structured data. Panels, widths and file paths are defined in `src/config/screenshots.ts`, and each locale names its set in `src/i18n/locales.ts`.
+
 ## Search engines and AI agents
 
 - `robots.txt` allows every crawler, including AI search, AI assistants and AI training crawlers, and says so in a `Content-Signal` line. `/get/` is crawlable so its `noindex` can be seen.
 - `/llms.txt` is a plain-language summary of the app with the store links, generated from the English copy. Its store links use the campaign `llms_txt`, so installs that start there are visible in App Store Connect and Play Console.
-- Every page carries JSON-LD: Organization, founder, WebSite, WebPage and, on the home pages, MobileApplication (one free offer per store, feature list, store listings in `sameAs`) and FAQPage.
+- Every page carries JSON-LD: Organization, founder, WebSite, WebPage and, on the home pages, MobileApplication (one free offer per store, feature list, captioned screenshots, store listings in `sameAs`) and FAQPage.
 - Store links have accessible names with the product and platform, e.g. "Download on the App Store: RePasito (iPhone)".
+- Google Search Console has the property `https://repasito.app/`, verified by `public/googlebc2201f44e4bc777.html` (the file must stay), with `sitemap-index.xml` submitted.
 - After each deploy, `scripts/indexnow.mjs` submits the sitemap URLs to IndexNow (Bing, Yandex, Naver, Seznam, Yep). The key is the 32-character `.txt` file in `public/`.
 - The sitemap's `lastmod` and each page's `dateModified` are the date of the commit being built.
 - Share images: `npm run og` renders one 1200×630 image per language into `public/og/` with the localized headline. Run it after changing a hero title; it needs Chrome plus Inter and Noto Sans CJK fonts.

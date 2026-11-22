@@ -24,6 +24,7 @@ export const pl: Dict = {
     loopEnd: 'Koniec pętli',
   },
   store: { appStore: 'Pobierz w App Store', googlePlay: 'Pobierz z Google Play' },
+  screens: ['Ćwicz w pętli', 'Zwolnij tempo', 'Ćwicz jeden fragment', 'Ćwicz do każdej muzyki', 'Nagrywaj każde podejście'],
   steps: {
     title: 'Jak wygląda trening',
     items: [

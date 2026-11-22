@@ -11,6 +11,7 @@
     "badges": "node scripts/fetch-badges.mjs",
     "links": "node --experimental-strip-types scripts/print-links.ts",
     "og": "node --experimental-strip-types scripts/render-og.ts",
+    "screenshots": "node --experimental-strip-types scripts/import-screenshots.ts",
     "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {

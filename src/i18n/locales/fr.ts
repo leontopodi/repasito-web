@@ -24,6 +24,7 @@ export const fr: Dict = {
     loopEnd: 'Fin de la boucle',
   },
   store: { appStore: 'Télécharger dans l’App Store', googlePlay: 'Disponible sur Google Play' },
+  screens: ['Entraîne-toi en boucle', 'Ralentis le tempo', 'Travaille un passage', 'Sur toutes tes musiques', 'Filme chaque prise'],
   steps: {
     title: 'Comment se passe une séance',
     items: [

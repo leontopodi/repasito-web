@@ -24,6 +24,7 @@ export const ru: Dict = {
     loopEnd: 'Конец повтора',
   },
   store: { appStore: 'Загрузите в App Store', googlePlay: 'Доступно в Google Play' },
+  screens: ['Повторяй по кругу', 'Замедли темп', 'Учи по частям', 'Под любую музыку', 'Снимай каждый дубль'],
   steps: {
     title: 'Как проходит тренировка',
     items: [

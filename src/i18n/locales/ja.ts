@@ -24,6 +24,7 @@ export const ja: Dict = {
     loopEnd: 'ループの終了位置',
   },
   store: { appStore: 'App Storeからダウンロード', googlePlay: 'Google Play で手に入れよう' },
+  screens: ['ループで何度でも練習', 'スローで細かい振りまで', '苦手なパートだけ集中練習', 'どんな曲でも練習できる', '踊りを録画してすぐ確認'],
   steps: {
     title: '練習の流れ',
     items: [

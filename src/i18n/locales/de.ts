@@ -24,6 +24,7 @@ export const de: Dict = {
     loopEnd: 'Loop-Ende',
   },
   store: { appStore: 'Laden im App Store', googlePlay: 'Jetzt bei Google Play' },
+  screens: ['Üben in Dauerschleife', 'Tempo runter', 'Übe einen Abschnitt', 'Üben zu jeder Musik', 'Jeden Take aufnehmen'],
   steps: {
     title: 'So läuft dein Training',
     items: [

@@ -24,6 +24,7 @@ export const it: Dict = {
     loopEnd: 'Fine del loop',
   },
   store: { appStore: 'Scarica su App Store', googlePlay: 'Disponibile su Google Play' },
+  screens: ['Esercitati in loop', 'Rallenta il ritmo', 'Una sezione alla volta', 'Con qualsiasi musica', 'Registra ogni prova'],
   steps: {
     title: 'Come funziona un allenamento',
     items: [

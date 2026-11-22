@@ -29,6 +29,8 @@ export interface Dict {
     appStore: string;
     googlePlay: string;
   };
+  /** Captions printed on this language's App Store screenshots, in listing order. Used as their alt text. */
+  screens: readonly [string, string, string, string, string];
   steps: {
     title: string;
     items: ReadonlyArray<{ title: string; body: string }>;

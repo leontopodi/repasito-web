@@ -24,6 +24,7 @@ export const ptBr: Dict = {
     loopEnd: 'Fim do loop',
   },
   store: { appStore: 'Baixar na App Store', googlePlay: 'Disponível no Google Play' },
+  screens: ['Pratique em loop', 'Vá mais devagar', 'Pratique um trecho', 'Com qualquer música', 'Grave cada tentativa'],
   steps: {
     title: 'Como é um treino',
     items: [
