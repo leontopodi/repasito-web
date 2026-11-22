@@ -14,7 +14,7 @@ const PLAY = ['en', 'es', 'pt-br', 'fr', 'it', 'de', 'pl', 'ru', 'ja', 'ko', 'zh
 const jobs = [
   ...APPLE.map((code) => ({
     file: `app-store-${code}.svg`,
-    url: `https://tools.applemarketingtools.com/api/badges/download-on-the-app-store/black/${code}`,
+    url: `https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/${code}`,
     type: 'svg',
   })),
   ...PLAY.map((code) => ({
