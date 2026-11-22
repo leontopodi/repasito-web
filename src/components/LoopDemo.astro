@@ -1,7 +1,6 @@
 ---
 import { t, type LocaleSlug } from '../i18n';
-import { withBase } from '../lib/paths';
-import { COUNTS, POSES, SPEEDS, DEFAULT_LOOP } from '../scripts/choreography';
+import { COUNTS, SPEEDS, DEFAULT_LOOP } from '../scripts/choreography';
 
 interface Props {
   locale: LocaleSlug;
@@ -15,22 +14,7 @@ const groupName = `speed-${Math.random().toString(36).slice(2, 8)}`;
 
 <figure class="demo" data-loop-demo data-start={start} data-end={end} aria-label={dict.demo.label} style={`--start:${start};--end:${end};`}>
   <div class="demo__stage" aria-hidden="true">
-    <span class="demo__numeral" data-numeral>{start}</span>
-    <div class="demo__dancer" data-dancer>
-      {
-        POSES.map((pose, i) => (
-          <img
-            src={withBase(`/img/pose-${pose}.webp`)}
-            alt=""
-            width="384"
-            height="414"
-            data-pose={pose}
-            class:list={['demo__pose', { 'is-active': i === 0 }]}
-            fetchpriority={i === 0 ? 'high' : 'auto'}
-          />
-        ))
-      }
-    </div>
+    <canvas class="demo__dancer" data-dancer width="1024" height="1024"></canvas>
   </div>
 
   <div class="demo__track" data-track>
@@ -108,50 +92,19 @@ const groupName = `speed-${Math.random().toString(36).slice(2, 8)}`;
     display: grid;
     place-items: center;
     overflow: hidden;
-    container-type: inline-size;
     border-radius: 12px;
-    background:
-      linear-gradient(to top, rgb(242 244 243 / 0.05), transparent 30%),
-      var(--ink);
-  }
-
-  /* The count being danced, set huge behind the dancer: the 5-6-7-8 every dancer hears. */
-  .demo__numeral {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    font-size: 84cqw;
-    translate: 0 1%;
-    font-weight: 900;
-    font-stretch: 62%;
-    line-height: 1;
-    color: transparent;
-    -webkit-text-stroke: 2px rgb(43 217 160 / 0.5);
-    font-variant-numeric: tabular-nums;
+    /* The launch screen's spotlight. */
+    background: radial-gradient(ellipse 58% 72% at 50% 52%, #123f33 0%, #0b211c 46%, var(--ink) 100%);
   }
 
   .demo__dancer {
-    position: relative;
-    width: 52%;
-    aspect-ratio: 384 / 414;
-    transition: transform 120ms ease-out;
+    width: min(78%, 420px);
+    aspect-ratio: 1;
+    transition: transform 160ms ease-out;
   }
 
   .demo__dancer.is-flipped {
     transform: scaleX(-1);
-  }
-
-  .demo__pose {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-  }
-
-  .demo__pose.is-active {
-    opacity: 1;
   }
 
   .demo__track {

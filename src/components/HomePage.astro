@@ -118,7 +118,10 @@ const structuredData = [
       <h2 id="story-title">{d.story.title}</h2>
       <blockquote>
         <p>{d.story.body}</p>
-        <footer class="muted">{d.story.signature}</footer>
+        <footer class="story__by muted">
+          <span>{d.story.signature}</span>
+          <a href={SITE.founder.url} rel="noopener">{SITE.founder.handle}</a>
+        </footer>
       </blockquote>
     </section>
 
@@ -363,8 +366,15 @@ const structuredData = [
     line-height: 1.55;
   }
 
-  .story blockquote footer {
+  .story__by {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
     font-size: var(--step-0);
+  }
+
+  .story__by a {
+    color: var(--chalk);
   }
 
   @media (min-width: 900px) {

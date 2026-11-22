@@ -26,19 +26,19 @@ export const es: Dict = {
   steps: {
     title: 'Así es una sesión de práctica',
     items: [
-      { title: 'Elige la música o el video', body: 'Busca en YouTube desde la app, abre un video de Fotos o Archivos, o pon una canción de Apple Music en iPhone.' },
+      { title: 'Elige la música o el video', body: 'Busca en YouTube desde la app, pega un enlace de YouTube o Instagram, o abre tu propia música y tus videos.' },
       { title: 'Marca la sección', body: 'Define dónde empieza y termina el bucle. Añade más secciones y pasa de una a otra mientras aprendes la coreo.' },
       { title: 'Ajusta la velocidad', body: 'Bájala para aprender los pasos y súbela poco a poco hasta llegar al tempo real.' },
       { title: 'Baila, graba, revisa', body: 'Apoya el teléfono y baila. Cada toma se graba y se reproduce, y guardas las buenas en tu galería.' },
     ],
   },
   details: {
-    title: 'Hecha para practicar, no solo para mirar',
+    title: 'Hecha para practicar baile',
     items: [
       { title: 'Bucles que no se detienen', body: 'La sección se repite hasta que la paras, así sigues bailando en vez de tocar «repetir».' },
       { title: 'Velocidad exacta', body: 'A media velocidad para los pasos nuevos, casi a tempo antes del show. Con Pro la ajustas en pasos de 0,05×.' },
       { title: 'Reflejar', body: 'Invierte el video de referencia para seguirlo como a tu profe en el espejo del estudio.' },
-      { title: '4K a 60 fps', body: 'Con Pro grabas video nítido y fluido, y revisar los pies y el timing es mucho más fácil.' },
+      { title: 'Máxima calidad', body: 'Con Pro grabas en la máxima calidad, para que tu baile se vea nítido en cada toma.' },
       { title: 'Se queda en tu teléfono', body: 'Tus grabaciones y los videos que importas no se suben a ningún sitio.' },
     ],
   },
@@ -49,17 +49,18 @@ export const es: Dict = {
   },
   styles: {
     title: 'Para cualquier estilo que bailes con música',
-    body: 'Bachata, salsa, kizomba, zouk, hip hop, K-pop, heels, contemporáneo, jazz, ballet, tango, swing. Si lo aprendes de un video o contando tiempos, lo puedes repetir en bucle.',
+    body: 'Bachata, salsa, kizomba, zouk, merengue, cumbia, reggaetón, dancehall, afro, hip hop, popping, locking, breaking, krump, house, waacking, voguing, K-pop, heels, commercial, contemporáneo, jazz, lírico, ballet, claqué, flamenco, tango, swing, lindy hop, danza del vientre, Bollywood, line dance. Si lo aprendes de un video o contando tiempos, lo puedes repetir en bucle.',
   },
   story: {
     title: 'Por qué existe RePasito',
-    body: 'Soy Marcin, bailarín e ingeniero de software. Mientras preparaba mi primera coreografía de bachata para un show, volvía una y otra vez al teléfono para rebobinar los mismos veinte segundos y empezar otra grabación. RePasito es la app que necesitaba entonces: repite la parte que estoy trabajando y me graba mientras bailo.',
+    body:
+      '“Mientras preparaba mi primera coreografía de bachata para un show, volvía una y otra vez al teléfono para rebobinar los mismos veinte segundos y empezar otra grabación. RePasito es la app que necesitaba entonces: repite la parte que estoy trabajando y me graba mientras bailo.”',
     signature: 'Marcin, creador de RePasito',
   },
   faq: {
     title: 'Preguntas',
     items: [
-      { q: '¿Cómo repito en bucle una parte de un video de baile de YouTube?', a: 'Busca el video en RePasito o pega el enlace, y arrastra los marcadores del bucle hasta la parte que quieras. Se repite hasta que lo detengas.' },
+      { q: '¿Cómo repito en bucle una parte de un video de baile de YouTube o Instagram?', a: 'Busca el video en RePasito o pega un enlace de YouTube o de un Reel de Instagram, y arrastra los marcadores del bucle hasta la parte que quieras. Se repite hasta que lo detengas.' },
       { q: '¿Puedo poner un video de baile en cámara lenta?', a: 'Sí. Elige cualquier velocidad de práctica a partir de la mitad. Con Pro la ajustas en pasos de 0,05×.' },
       { q: '¿RePasito es gratis?', a: 'Puedes descargarla y empezar a practicar gratis. Pro desbloquea bucles, revisión y guardado ilimitados, y lo pruebas gratis durante tus tres primeros días de práctica.' },
       { q: '¿RePasito está en Android?', a: 'Sí. RePasito está en el App Store para iPhone y en Google Play para Android. Apple Music solo está disponible en iPhone.', android: true },

@@ -34,7 +34,8 @@ export const SITE = {
   /** GA4 measurement ID (G-XXXXXXX). Sets cookies; not loaded when unset. */
   gaMeasurementId: optional(import.meta.env.PUBLIC_GA_MEASUREMENT_ID),
   social: [
-    { name: 'Instagram', url: 'https://www.instagram.com/repasito/' },
-    { name: 'TikTok', url: 'https://www.tiktok.com/@repasito' },
+    { name: 'Instagram', url: 'https://www.instagram.com/repasito.app/' },
+    { name: 'TikTok', url: 'https://www.tiktok.com/@repasito.app' },
   ],
+  founder: { handle: '@marcincito', url: 'https://www.instagram.com/marcincito/' },
 } as const;

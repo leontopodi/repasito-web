@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { detectPlatform } from '../src/scripts/platform';
-import { stepFor } from '../src/scripts/choreography';
+import { advancePlayhead, COUNT_SECONDS } from '../src/scripts/choreography';
 
 describe('detectPlatform', () => {
   it.each([
@@ -14,10 +14,21 @@ describe('detectPlatform', () => {
   });
 });
 
-describe('stepFor', () => {
-  it('dances counts 5–8 as a mirror of 1–4', () => {
-    expect(stepFor(1)).toEqual({ pose: 'raised-hand', flipped: false });
-    expect(stepFor(5)).toEqual({ pose: 'raised-hand', flipped: true });
-    expect(stepFor(8)).toEqual({ pose: 'hands-on-head', flipped: true });
+describe('advancePlayhead', () => {
+  it('moves one count per COUNT_SECONDS at 1×', () => {
+    expect(advancePlayhead(2, COUNT_SECONDS, 1, 3, 6)).toBeCloseTo(3);
+  });
+
+  it('wraps from the end of the loop back to its start', () => {
+    expect(advancePlayhead(5.9, COUNT_SECONDS * 0.2, 1, 3, 6)).toBeCloseTo(2.1);
+  });
+
+  it('moves into a loop that no longer contains the playhead', () => {
+    expect(advancePlayhead(7.5, 0.01, 1, 2, 4)).toBeGreaterThanOrEqual(1);
+    expect(advancePlayhead(7.5, 0.01, 1, 2, 4)).toBeLessThan(4);
+  });
+
+  it('slows down with speed', () => {
+    expect(advancePlayhead(2, COUNT_SECONDS, 0.5, 3, 6)).toBeCloseTo(2.5);
   });
 });

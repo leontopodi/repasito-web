@@ -1,28 +1,36 @@
-import { BEAT_MS, COUNTS, stepFor } from './choreography';
+import { advancePlayhead, COUNTS, COUNT_SECONDS } from './choreography';
+import { dancePose, drawDancer } from './launch-dancer';
 
 const MIN = 1;
 const MAX = COUNTS.length;
+/** Ignore frame gaps longer than this (tab switches, debugger pauses). */
+const MAX_FRAME_SECONDS = 0.1;
+
+type Edge = 'start' | 'end';
 
 /**
- * Hero demo: an eight-count phrase that loops between two draggable handles.
- * Mirrors what the app does — loop a section, change speed, mirror the reference.
+ * Hero demo: the launch-screen dancer grooves through an eight-count phrase that loops
+ * between two draggable handles. Mirrors what the app does: loop a section, change speed,
+ * mirror the reference.
  */
 export class LoopDemo {
   private start: number;
   private end: number;
-  private current: number;
+  /** Playhead in counts since the start of count 1 (count n spans [n-1, n)). */
+  private position: number;
   private speed = 1;
   private mirrored = false;
   private playing = false;
   private visible = true;
-  private timer: number | undefined;
+  private frame: number | undefined;
+  private lastTime: number | undefined;
+  private renderedCount = 0;
 
   private readonly cells: HTMLElement[];
-  private readonly poses: Map<string, HTMLElement>;
-  private readonly dancer: HTMLElement;
-  private readonly numeral: HTMLElement;
+  private readonly canvas: HTMLCanvasElement;
+  private readonly ctx: CanvasRenderingContext2D;
   private readonly track: HTMLElement;
-  private readonly handles: Record<'start' | 'end', HTMLElement>;
+  private readonly handles: Record<Edge, HTMLElement>;
   private readonly playButton: HTMLButtonElement;
   private readonly playLabel: HTMLElement;
   private readonly mirrorButton: HTMLButtonElement;
@@ -30,11 +38,12 @@ export class LoopDemo {
   constructor(private readonly root: HTMLElement) {
     this.start = Number(root.dataset.start) || MIN;
     this.end = Number(root.dataset.end) || MAX;
-    this.current = this.start;
+    this.position = this.start - 1;
     this.cells = [...root.querySelectorAll<HTMLElement>('[data-count]')];
-    this.poses = new Map([...root.querySelectorAll<HTMLElement>('[data-pose]')].map((el) => [el.dataset.pose!, el]));
-    this.dancer = this.query('[data-dancer]');
-    this.numeral = this.query('[data-numeral]');
+    this.canvas = this.query<HTMLCanvasElement>('[data-dancer]');
+    const ctx = this.canvas.getContext('2d');
+    if (!ctx) throw new Error('LoopDemo: canvas 2D is unavailable');
+    this.ctx = ctx;
     this.track = this.query('[data-track]');
     this.handles = { start: this.query('[data-handle="start"]'), end: this.query('[data-handle="end"]') };
     this.playButton = this.query<HTMLButtonElement>('[data-play]');
@@ -43,14 +52,20 @@ export class LoopDemo {
   }
 
   mount(): void {
-    this.render();
+    this.sizeCanvas();
+    this.renderRange();
+    this.renderFrame();
     this.bindTrack();
     this.bindHandles();
     this.bindControls();
     this.observeVisibility();
+    new ResizeObserver(() => {
+      this.sizeCanvas();
+      this.renderFrame();
+    }).observe(this.canvas);
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reducedMotion) this.setPlaying(true);
+    this.setPlaying(!reducedMotion);
   }
 
   private query<T extends HTMLElement = HTMLElement>(selector: string): T {
@@ -65,45 +80,55 @@ export class LoopDemo {
     this.playing = playing;
     this.playButton.setAttribute('aria-pressed', String(playing));
     this.playLabel.textContent = (playing ? this.playButton.dataset.labelPause : this.playButton.dataset.labelPlay) ?? '';
-    this.schedule();
+    this.updateLoop();
   }
 
-  private schedule(): void {
-    window.clearTimeout(this.timer);
-    this.timer = undefined;
-    if (!this.playing || !this.visible || document.hidden) return;
-    this.timer = window.setTimeout(() => {
-      this.advance();
-      this.schedule();
-    }, BEAT_MS / this.speed);
+  /** Runs the animation loop only while playing, on screen and in a visible tab. */
+  private updateLoop(): void {
+    const shouldRun = this.playing && this.visible && !document.hidden;
+    if (shouldRun && this.frame === undefined) {
+      this.lastTime = undefined;
+      this.frame = requestAnimationFrame(this.tick);
+    } else if (!shouldRun && this.frame !== undefined) {
+      cancelAnimationFrame(this.frame);
+      this.frame = undefined;
+    }
   }
 
-  private advance(): void {
-    this.current = this.current >= this.end || this.current < this.start ? this.start : this.current + 1;
-    this.render();
-  }
+  private readonly tick = (now: number): void => {
+    const seconds = this.lastTime === undefined ? 0 : Math.min((now - this.lastTime) / 1000, MAX_FRAME_SECONDS);
+    this.lastTime = now;
+    this.position = advancePlayhead(this.position, seconds, this.speed, this.start, this.end);
+    this.renderFrame();
+    this.frame = requestAnimationFrame(this.tick);
+  };
 
   // Loop range ------------------------------------------------------------
 
   private setRange(start: number, end: number): void {
     this.start = clamp(Math.min(start, end), MIN, MAX);
     this.end = clamp(Math.max(start, end), MIN, MAX);
-    if (this.current < this.start || this.current > this.end) this.current = this.start;
-    this.render();
+    if (this.position < this.start - 1 || this.position >= this.end) this.position = this.start - 1;
+    this.renderRange();
+    this.renderFrame();
+  }
+
+  private moveEdge(edge: Edge, count: number): void {
+    if (edge === 'start') this.setRange(Math.min(count, this.end), this.end);
+    else this.setRange(this.start, Math.max(count, this.start));
   }
 
   private countAt(clientX: number): number {
     const rect = this.track.getBoundingClientRect();
-    const ratio = (clientX - rect.left) / rect.width;
-    return clamp(Math.floor(ratio * MAX) + 1, MIN, MAX);
+    return clamp(Math.floor(((clientX - rect.left) / rect.width) * MAX) + 1, MIN, MAX);
   }
 
   private bindTrack(): void {
-    let edge: 'start' | 'end' | null = null;
+    let edge: Edge | null = null;
 
     this.track.addEventListener('pointerdown', (event) => {
       const count = this.countAt(event.clientX);
-      const handle = (event.target as HTMLElement).dataset.handle as 'start' | 'end' | undefined;
+      const handle = (event.target as HTMLElement).dataset.handle as Edge | undefined;
       // Grab the explicit handle, otherwise whichever edge is closer to the pointer.
       edge = handle ?? (Math.abs(count - this.start) <= Math.abs(count - this.end) ? 'start' : 'end');
       this.track.setPointerCapture(event.pointerId);
@@ -122,16 +147,10 @@ export class LoopDemo {
     this.track.addEventListener('pointercancel', release);
   }
 
-  private moveEdge(edge: 'start' | 'end', count: number): void {
-    if (edge === 'start') this.setRange(Math.min(count, this.end), this.end);
-    else this.setRange(this.start, Math.max(count, this.start));
-  }
-
   private bindHandles(): void {
     (['start', 'end'] as const).forEach((edge) => {
       this.handles[edge].addEventListener('keydown', (event) => {
-        const value = edge === 'start' ? this.start : this.end;
-        const next = keyValue(event.key, value);
+        const next = keyValue(event.key, edge === 'start' ? this.start : this.end);
         if (next === undefined) return;
         event.preventDefault();
         this.moveEdge(edge, next);
@@ -145,45 +164,60 @@ export class LoopDemo {
     this.mirrorButton.addEventListener('click', () => {
       this.mirrored = !this.mirrored;
       this.mirrorButton.setAttribute('aria-pressed', String(this.mirrored));
-      this.render();
+      this.canvas.classList.toggle('is-flipped', this.mirrored);
     });
 
     this.root.querySelectorAll<HTMLInputElement>('[data-speed]').forEach((input) => {
       input.addEventListener('change', () => {
         this.speed = Number(input.value) || 1;
-        this.schedule();
       });
     });
 
-    document.addEventListener('visibilitychange', () => this.schedule());
+    document.addEventListener('visibilitychange', () => this.updateLoop());
   }
 
   private observeVisibility(): void {
-    if (!('IntersectionObserver' in window)) return;
     new IntersectionObserver(([entry]) => {
       this.visible = entry?.isIntersecting ?? true;
-      this.schedule();
+      this.updateLoop();
     }).observe(this.root);
   }
 
   // Rendering -------------------------------------------------------------
 
-  private render(): void {
+  private sizeCanvas(): void {
+    const size = Math.round(this.canvas.clientWidth * Math.min(window.devicePixelRatio || 1, 3));
+    if (size > 0 && this.canvas.width !== size) {
+      this.canvas.width = size;
+      this.canvas.height = size;
+    }
+  }
+
+  private renderRange(): void {
     this.root.style.setProperty('--start', String(this.start));
     this.root.style.setProperty('--end', String(this.end));
     this.handles.start.setAttribute('aria-valuenow', String(this.start));
     this.handles.end.setAttribute('aria-valuenow', String(this.end));
-
     this.cells.forEach((cell, i) => {
       const count = i + 1;
       cell.classList.toggle('is-in-loop', count >= this.start && count <= this.end);
-      cell.classList.toggle('is-current', count === this.current);
     });
+    this.renderedCount = 0;
+  }
 
-    const { pose, flipped } = stepFor(this.current);
-    this.poses.forEach((el, key) => el.classList.toggle('is-active', key === pose));
-    this.dancer.classList.toggle('is-flipped', flipped !== this.mirrored);
-    this.numeral.textContent = String(this.current);
+  private renderFrame(): void {
+    const count = Math.floor(this.position) + 1;
+    if (count !== this.renderedCount) {
+      this.cells.forEach((cell, i) => cell.classList.toggle('is-current', i + 1 === count));
+      this.renderedCount = count;
+    }
+
+    const { ctx, canvas } = this;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const scale = canvas.width / 1024;
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    drawDancer(ctx, dancePose(this.position * COUNT_SECONDS));
   }
 }
 
