@@ -44,5 +44,5 @@ export const SITE = {
     { name: 'Instagram', url: 'https://www.instagram.com/repasito.app/' },
     { name: 'TikTok', url: 'https://www.tiktok.com/@repasito.app' },
   ],
-  founder: { handle: '@marcincito', url: 'https://www.instagram.com/marcincito/' },
+  founder: { name: 'Marcin Gorny', handle: '@marcincito', url: 'https://www.instagram.com/marcincito/' },
 } as const;

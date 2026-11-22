@@ -61,3 +61,9 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+      - uses: actions/checkout@v4
+
+      - name: Notify search engines (IndexNow)
+        continue-on-error: true
+        run: node scripts/indexnow.mjs "${{ steps.deployment.outputs.page_url }}"

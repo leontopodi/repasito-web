@@ -49,6 +49,16 @@ npm run links -- --csv # spreadsheet
 
 Token convention: `<channel>_<placement>`, lowercase, at most 40 characters (Apple's limit), e.g. `ig_bio` or `cr_ana` for a creator.
 
+## Search engines and AI agents
+
+- `robots.txt` allows every crawler, including AI search, AI assistants and AI training crawlers, and says so in a `Content-Signal` line. `/get/` is crawlable so its `noindex` can be seen.
+- `/llms.txt` is a plain-language summary of the app with the store links, generated from the English copy. Its store links use the campaign `llms_txt`, so installs that start there are visible in App Store Connect and Play Console.
+- Every page carries JSON-LD: Organization, founder, WebSite, WebPage and, on the home pages, MobileApplication (one free offer per store, feature list, store listings in `sameAs`) and FAQPage.
+- Store links have accessible names with the product and platform, e.g. "Download on the App Store: RePasito (iPhone)".
+- After each deploy, `scripts/indexnow.mjs` submits the sitemap URLs to IndexNow (Bing, Yandex, Naver, Seznam, Yep). The key is the 32-character `.txt` file in `public/`.
+- The sitemap's `lastmod` and each page's `dateModified` are the date of the commit being built.
+- Share images: `npm run og` renders one 1200×630 image per language into `public/og/` with the localized headline. Run it after changing a hero title; it needs Chrome plus Inter and Noto Sans CJK fonts.
+
 ## Content
 
 - Copy: `src/i18n/locales/<locale>.ts`. The `Dict` type makes the compiler reject a locale with a missing key.

@@ -12,8 +12,8 @@ const [start, end] = DEFAULT_LOOP;
 const groupName = `speed-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
-<figure class="demo" data-loop-demo data-start={start} data-end={end} aria-label={dict.demo.label} style={`--start:${start};--end:${end};`}>
-  <div class="demo__stage" aria-hidden="true">
+<figure class="demo" data-loop-demo data-start={start} data-end={end} style={`--start:${start};--end:${end};`}>
+  <div class="demo__stage" role="img" aria-label={dict.demo.label}>
     <canvas class="demo__dancer" data-dancer width="1024" height="1024"></canvas>
   </div>
 

@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { execSync } from 'node:child_process';
 import sitemap from '@astrojs/sitemap';
 
 /**
@@ -11,6 +12,15 @@ import sitemap from '@astrojs/sitemap';
 // Pages may report http:// before its certificate is issued; the public site is always HTTPS.
 const site = (process.env.SITE_URL || 'https://repasito.app').replace(/^http:\/\//, 'https://');
 const base = process.env.BASE_PATH || '/';
+
+/** Sitemap lastmod: the date of the commit being built. */
+function lastCommitDate() {
+  try {
+    return new Date(execSync('git log -1 --format=%cI', { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim());
+  } catch {
+    return new Date();
+  }
+}
 
 const sitemapLocales = {
   en: 'en',
@@ -37,6 +47,7 @@ export default defineConfig({
     sitemap({
       i18n: { defaultLocale: 'en', locales: sitemapLocales },
       filter: (page) => !/\/(get|404)\/?$/.test(new URL(page).pathname),
+      lastmod: lastCommitDate(),
     }),
   ],
 });

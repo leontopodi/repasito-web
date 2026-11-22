@@ -6,7 +6,7 @@ import StoreBadges from './StoreBadges.astro';
 import LoopDemo from './LoopDemo.astro';
 import Phrased from './Phrased.astro';
 import { SITE, STORE } from '../config/site';
-import { getLocale, localePath, t, type LocaleSlug } from '../i18n';
+import { getLocale, localePath, LOCALES, t, type LocaleSlug } from '../i18n';
 import { absoluteUrl, withBase } from '../lib/paths';
 import { appStoreUrl, playStoreUrl } from '../lib/storeLinks';
 import { POSES } from '../scripts/choreography';
@@ -21,9 +21,17 @@ const d = t(locale);
 const faq = d.faq.items.filter((item) => SITE.playEnabled || !item.android);
 const pageUrl = absoluteUrl(localePath(locale), Astro.site);
 
+const siteRoot = absoluteUrl('/', Astro.site);
+const appId = `${siteRoot}#app`;
+const stores = [
+  { name: 'App Store (iPhone)', url: appStoreUrl(STORE) },
+  ...(SITE.playEnabled ? [{ name: 'Google Play (Android)', url: playStoreUrl(STORE) }] : []),
+];
+
 const structuredData = [
   {
     '@type': 'MobileApplication',
+    '@id': appId,
     name: d.meta.storeName,
     alternateName: SITE.name,
     description: d.meta.description,
@@ -32,10 +40,22 @@ const structuredData = [
     operatingSystem: SITE.playEnabled ? 'iOS, Android' : 'iOS',
     applicationCategory: SITE.appCategory,
     applicationSubCategory: 'Dance practice',
-    inLanguage: def.htmlLang,
-    installUrl: [appStoreUrl(STORE), ...(SITE.playEnabled ? [playStoreUrl(STORE)] : [])],
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-    publisher: { '@id': `${absoluteUrl('/', Astro.site)}#org` },
+    inLanguage: LOCALES.map((l) => l.htmlLang),
+    featureList: [...d.details.items, { title: d.gestures.title, body: d.gestures.body }].map((item) => `${item.title}: ${item.body}`),
+    installUrl: stores.map((store) => store.url),
+    downloadUrl: stores.map((store) => store.url),
+    isAccessibleForFree: true,
+    author: { '@id': `${siteRoot}#founder` },
+    publisher: { '@id': `${siteRoot}#org` },
+    // One offer per store: the download is free on both.
+    offers: stores.map((store) => ({
+      '@type': 'Offer',
+      name: store.name,
+      url: store.url,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+    })),
   },
   {
     '@type': 'FAQPage',
@@ -49,7 +69,15 @@ const structuredData = [
 ];
 ---
 
-<BaseLayout locale={locale} title={d.meta.title} description={d.meta.description} alternates structuredData={structuredData}>
+<BaseLayout
+  locale={locale}
+  title={d.meta.title}
+  description={d.meta.description}
+  alternates
+  structuredData={structuredData}
+  about={appId}
+  image={`/og/${locale}.jpg`}
+  imageAlt={`${d.meta.storeName}. ${d.hero.title}`}>
   <SiteHeader locale={locale} />
 
   <main id="main">
@@ -102,7 +130,16 @@ const structuredData = [
         {
           POSES.map((pose, i) => (
             <li>
-              <img src={withBase(`/img/pose-${pose}.webp`)} alt="" width="384" height="414" loading="lazy" />
+              <img
+                src={withBase(`/img/pose-${pose}.webp`)}
+                srcset={`${withBase(`/img/pose-${pose}-192.webp`)} 192w, ${withBase(`/img/pose-${pose}.webp`)} 384w`}
+                sizes="(min-width: 900px) 150px, 22vw"
+                alt=""
+                width="384"
+                height="414"
+                loading="lazy"
+                decoding="async"
+              />
               <span>{d.gestures.poses[i]}</span>
             </li>
           ))

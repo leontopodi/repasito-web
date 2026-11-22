@@ -5,6 +5,8 @@ const MIN = 1;
 const MAX = COUNTS.length;
 /** Ignore frame gaps longer than this (tab switches, debugger pauses). */
 const MAX_FRAME_SECONDS = 0.1;
+/** Sharp enough for line art; higher ratios only cost fill time. */
+const MAX_PIXEL_RATIO = 2;
 
 type Edge = 'start' | 'end';
 
@@ -64,8 +66,10 @@ export class LoopDemo {
       this.renderFrame();
     }).observe(this.canvas);
 
+    // The first frame is already drawn; start moving once the page has loaded and is idle,
+    // so the animation never competes with the first render.
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    this.setPlaying(!reducedMotion);
+    if (!reducedMotion) whenIdleAfterLoad(() => this.setPlaying(true));
   }
 
   private query<T extends HTMLElement = HTMLElement>(selector: string): T {
@@ -186,7 +190,7 @@ export class LoopDemo {
   // Rendering -------------------------------------------------------------
 
   private sizeCanvas(): void {
-    const size = Math.round(this.canvas.clientWidth * Math.min(window.devicePixelRatio || 1, 3));
+    const size = Math.round(this.canvas.clientWidth * Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO));
     if (size > 0 && this.canvas.width !== size) {
       this.canvas.width = size;
       this.canvas.height = size;
@@ -219,6 +223,15 @@ export class LoopDemo {
     ctx.setTransform(scale, 0, 0, scale, 0, 0);
     drawDancer(ctx, dancePose(this.position * COUNT_SECONDS));
   }
+}
+
+function whenIdleAfterLoad(callback: () => void): void {
+  const schedule = () => {
+    if ('requestIdleCallback' in window) window.requestIdleCallback(callback, { timeout: 1500 });
+    else setTimeout(callback, 200);
+  };
+  if (document.readyState === 'complete') schedule();
+  else window.addEventListener('load', schedule, { once: true });
 }
 
 function clamp(value: number, min: number, max: number): number {

@@ -1,6 +1,9 @@
 ---
 import '../styles/global.css';
+import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
 import { SITE, STORE } from '../config/site';
+import { LAST_MODIFIED } from '../lib/buildInfo';
+import { appStoreUrl, playStoreUrl } from '../lib/storeLinks';
 import { LOCALES, DEFAULT_LOCALE, getLocale, localePath, t, type LocaleSlug } from '../i18n';
 import { absoluteUrl, withBase } from '../lib/paths';
 
@@ -15,14 +18,32 @@ interface Props {
   noindex?: boolean;
   /** Extra JSON-LD objects for this page. */
   structuredData?: ReadonlyArray<Record<string, unknown>>;
+  /** `@id` of the thing this page is about, e.g. the app. */
+  about?: string;
+  /** Site path of the share image. */
+  image?: string;
+  /** Alt text of the share image. */
+  imageAlt?: string;
 }
 
-const { locale, title, description, page = '', alternates = false, noindex = false, structuredData = [] } = Astro.props;
+const {
+  locale,
+  title,
+  description,
+  page = '',
+  alternates = false,
+  noindex = false,
+  structuredData = [],
+  about,
+  image = '/og/en.jpg',
+  imageAlt = SITE.storeName,
+} = Astro.props;
 const def = getLocale(locale);
 const dict = t(locale);
 const canonical = absoluteUrl(localePath(locale, page), Astro.site);
-const ogImage = absoluteUrl('/img/og.png', Astro.site);
+const ogImage = absoluteUrl(image, Astro.site);
 const siteRoot = absoluteUrl('/', Astro.site);
+const storeListings = [appStoreUrl(STORE), ...(SITE.playEnabled ? [playStoreUrl(STORE)] : [])];
 
 const graph = [
   {
@@ -32,7 +53,16 @@ const graph = [
     url: siteRoot,
     logo: absoluteUrl('/icons/icon-512.png', Astro.site),
     email: SITE.supportEmail,
-    sameAs: SITE.social.map((s) => s.url),
+    founder: { '@id': `${siteRoot}#founder` },
+    // The store listings and social profiles that belong to this site.
+    sameAs: [...storeListings, ...SITE.social.map((s) => s.url)],
+  },
+  {
+    '@type': 'Person',
+    '@id': `${siteRoot}#founder`,
+    name: SITE.founder.name,
+    jobTitle: 'Dancer and software engineer',
+    sameAs: [SITE.founder.url],
   },
   {
     '@type': 'WebSite',
@@ -41,6 +71,18 @@ const graph = [
     url: siteRoot,
     inLanguage: LOCALES.map((l) => l.htmlLang),
     publisher: { '@id': `${siteRoot}#org` },
+  },
+  {
+    '@type': 'WebPage',
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: title,
+    description,
+    inLanguage: def.htmlLang,
+    isPartOf: { '@id': `${siteRoot}#website` },
+    ...(about ? { about: { '@id': about } } : {}),
+    primaryImageOfPage: ogImage,
+    dateModified: LAST_MODIFIED.toISOString(),
   },
   ...structuredData,
 ];
@@ -54,6 +96,8 @@ const graph = [
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <meta http-equiv="content-language" content={def.htmlLang} />
+    <link rel="preload" as="font" type="font/woff2" href={archivoLatin} crossorigin />
     {noindex && <meta name="robots" content="noindex" />}
     {
       alternates &&
@@ -80,10 +124,11 @@ const graph = [
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={SITE.storeName} />
+    <meta property="og:image:alt" content={imageAlt} />
     <meta property="og:locale" content={def.ogLocale} />
     {alternates && LOCALES.filter((l) => l.slug !== locale).map((l) => <meta property="og:locale:alternate" content={l.ogLocale} />)}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image:alt" content={imageAlt} />
 
     <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
     <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })} />
