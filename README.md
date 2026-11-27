@@ -81,3 +81,39 @@ The captions printed on the screenshots are the `screens` strings of each langua
 - Support page: `src/components/SupportPage.astro`, served at `/support/` and `/<locale>/support/`, with its copy under `support` in each locale file. The apps' Support links and the store listings' support URLs point to it.
 - Store badges: CI downloads the official localized artwork (`npm run badges`). If a download fails, the badge falls back to a text button.
 - Pose artwork and icons come from the app's asset catalog (`dance-app/RePasito/Resources/Assets.xcassets`).
+
+## Invites
+
+`/i/?c=RP-7K2M9` and each localized `/<locale>/i/` show the invitation, a copyable code,
+tracked store buttons, and installation instructions. Invalid or absent codes show only the
+heading and store buttons. Switching languages keeps the validated invite and public media
+fields (`c`, `src`, `id`, and an optional `s`/`e` pair in milliseconds).
+
+Invite buttons always use campaign `invite`; the `c` value here is an invite code, never an
+acquisition campaign. Google Play's nested, encoded `referrer` includes the validated link
+fields alongside its UTM fields. App Store links carry no code or media fields: iOS users
+must reopen the friend's link after installing or enter the code in View plans. The page
+loads no page-view analytics and sends no referrer header, so codes and media identifiers
+do not become analytics page URLs. Nothing is stored in the browser.
+
+Terms for the invite program are at `/terms/#invites` and the corresponding localized
+routes. Their copy and landing-page copy live in `src/i18n/referrals.ts`. The privacy data
+list is updated in all policy translations.
+
+Association output:
+
+- `/.well-known/apple-app-site-association` is prerendered from the production iOS app ID
+  in `src/config/apple-app-site-association.json`. The endpoint uses a static path parameter
+  because Astro ignores source folders whose names start with a dot. Page URLs still use
+  directory output; `trailingSlash: ignore` allows the required extensionless endpoint.
+- `/.well-known/assetlinks.json` uses only the production Play app-signing certificate,
+  not the upload or debug certificate. Android 15+ dynamic rules restrict it to `/i/`;
+  earlier Android versions also need `/i/` restricted in the app's manifest.
+
+Before launch, check both exact HTTPS URLs on the deployed custom domain: they must return
+200 without redirects, JSON bodies, and `Content-Type: application/json`. Static build files
+cannot configure GitHub Pages response headers; Astro preview serves extensionless AASA
+without a JSON content type. Confirm the production host's behavior and, if needed, arrange
+a JSON response-header rule at the serving layer. Domain association and store install
+handoff need validation with the signed apps after an authorized deployment. A local
+website build does not establish that those production associations are active.

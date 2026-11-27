@@ -40,13 +40,14 @@ const sitemapLocales = {
 export default defineConfig({
   site,
   base,
-  trailingSlash: 'always',
+  // Keep directory-style page URLs while allowing the extensionless AASA endpoint.
+  trailingSlash: 'ignore',
   build: { format: 'directory', inlineStylesheets: 'always' },
   compressHTML: true,
   integrations: [
     sitemap({
       i18n: { defaultLocale: 'en', locales: sitemapLocales },
-      filter: (page) => !/\/(get|404)\/?$/.test(new URL(page).pathname),
+      filter: (page) => !/\/(get|i|404)\/?$/.test(new URL(page).pathname),
       lastmod: lastCommitDate(),
     }),
   ],

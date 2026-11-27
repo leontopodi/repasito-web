@@ -1,0 +1,17 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.leontopodi.danceup.android",
+      "sha256_cert_fingerprints": [
+        "16:A5:C0:50:BF:ED:D8:B5:D5:27:73:7E:4E:E2:B0:C7:58:89:75:83:D6:11:45:8A:BD:96:94:AD:6A:28:77:B7"
+      ]
+    },
+    "relation_extensions": {
+      "delegate_permission/common.handle_all_urls": {
+        "dynamic_app_link_components": [{ "/": "/i/*" }, { "/": "*", "exclude": true }]
+      }
+    }
+  }
+]

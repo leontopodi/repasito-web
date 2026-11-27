@@ -2,6 +2,7 @@ import { STORE } from '../config/site';
 import { CAMPAIGNS } from '../config/campaigns';
 import { appStoreUrl, playStoreUrl, resolveCampaign } from '../lib/storeLinks';
 import { track } from './analytics';
+import { INVITE_CAMPAIGN, inviteStoreLinks } from '../lib/inviteLinks';
 
 /**
  * Re-targets store badges for visitors who arrived through a tracked link
@@ -13,10 +14,13 @@ export function initStoreLinks(): void {
 
   document.querySelectorAll<HTMLAnchorElement>('a[data-store]').forEach((link) => {
     const placement = link.dataset.placement ?? 'site';
-    const campaign = resolveCampaign(placement, params, CAMPAIGNS);
+    const campaign = placement === 'invite' ? INVITE_CAMPAIGN : resolveCampaign(placement, params, CAMPAIGNS);
+    const invite = placement === 'invite' ? inviteStoreLinks(STORE, params, link.dataset.hl) : undefined;
 
     link.href =
-      link.dataset.store === 'google_play' ? playStoreUrl(STORE, campaign, link.dataset.hl) : appStoreUrl(STORE, campaign);
+      link.dataset.store === 'google_play'
+        ? invite?.play ?? playStoreUrl(STORE, campaign, link.dataset.hl)
+        : invite?.apple ?? appStoreUrl(STORE, campaign);
 
     link.addEventListener('click', () => {
       track('store_click', {

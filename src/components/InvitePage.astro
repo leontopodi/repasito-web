@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import StoreBadges from './StoreBadges.astro';
+import Phrased from './Phrased.astro';
+import { REFERRALS } from '../i18n/referrals';
+import type { LocaleSlug } from '../i18n';
+
+interface Props { locale: LocaleSlug }
+const { locale } = Astro.props;
+const d = REFERRALS[locale];
+---
+
+<BaseLayout locale={locale} page="i" title={d.title} description={d.offer} noindex analytics={false}>
+  <SiteHeader locale={locale} page="i" />
+  <main id="main" class="invite wrap" data-invite-page data-copied={d.copied} data-copy-failed={d.copyFailed}>
+    <h1><Phrased text={d.title} locale={locale} /></h1>
+    <p class="lede" data-invite-detail hidden>{d.offer}</p>
+    <div class="invite__code" data-invite-detail hidden>
+      <code data-invite-code></code>
+      <button type="button" data-copy-invite>{d.copy}</button>
+      <p class="invite__status muted" role="status" aria-live="polite" data-copy-status></p>
+    </div>
+    <StoreBadges locale={locale} placement="invite" />
+    <p class="muted invite__instructions" data-invite-detail hidden>{d.afterInstall}</p>
+  </main>
+  <SiteFooter locale={locale} page="i" />
+</BaseLayout>
+
+<script>
+  import { initInvitePage } from '../scripts/invite';
+  import { initStoreLinks } from '../scripts/store-links';
+  initInvitePage();
+  initStoreLinks();
+</script>
+
+<style>
+  .invite {
+    max-width: 46rem;
+    padding-block: 3rem 6rem;
+    display: grid;
+    justify-items: start;
+    gap: 1.5rem;
+    min-height: 55vh;
+  }
+  h1 { font-size: var(--step-4); }
+  .invite__code {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    background: var(--stage);
+    padding: 1rem 1.25rem;
+    max-width: 100%;
+  }
+  .invite [hidden] { display: none; }
+  code { font-size: var(--step-2); letter-spacing: 0.08em; user-select: all; }
+  button {
+    min-height: 44px;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--chalk);
+    border-radius: var(--radius-s);
+    background: var(--chalk);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  button:hover { background: var(--haze); }
+  .invite__status { flex-basis: 100%; font-size: var(--step--1); }
+  .invite__status:empty { display: none; }
+  .invite__instructions { max-width: 48ch; }
+</style>
