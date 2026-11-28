@@ -1,4 +1,4 @@
-<p class="lede"><strong>自 <time datetime="2026-11-22">2026 年 11 月 22 日</time>起生效。</strong> 本政策适用于 iPhone 版 RePasito、Android 版 RePasito 以及 repasito.app 网站。RePasito 会把你录制的视频和练习用的媒体保存在你的设备上，仅在购买、产品分析、广告效果衡量（如已启用）和自愿提交的反馈中使用有限的服务数据。</p>
+<p class="lede"><strong>自 <time datetime="2026-11-27">2026年11月27日</time>起生效。</strong> 本政策适用于 iPhone 版 RePasito、Android 版 RePasito 以及 repasito.app 网站。RePasito 会把你录制的视频和练习用的媒体保存在你的设备上，仅在购买、产品分析、广告效果衡量（如已启用）和自愿提交的反馈中使用有限的服务数据。</p>
 
     <p class="note">本页面为译文。如与英文版有出入，以<a href="https://repasito.app/privacy/">英文版</a>为准。</p>
 
@@ -44,8 +44,15 @@
 
     <section>
       <h2>Google Play 购买（Android）</h2>
-      <p>在 Android 上，RePasito Pro 的付款由 Google Play 处理。开发者不会收到你的支付卡信息或 Google 账号凭证。为了解锁 Pro，应用会把 Google Play 签发的购买令牌发送到受保护的 Firebase 服务。该服务向 Google Play 查询订阅的当前状态、确认新的购买，并保存令牌的单向哈希值以及产品、订阅状态、到期时间和验证时间。原始购买令牌不会被保存。Google Play 还会就订阅变更（例如续订、取消和退款）向该服务发送实时通知，服务随后会再次向 Google 核实订阅状态。Firebase 匿名身份验证和使用 Google Play Integrity 的 Firebase App Check 会验证这些请求来自正版应用。</p>
+      <p>在 Android 上，RePasito Pro 的付款由 Google Play 处理。开发者不会收到你的支付卡信息或 Google 账号凭证。为了解锁 Pro，应用会把 Google Play 签发的购买令牌发送到受保护的 Firebase 服务。该服务向 Google Play 查询订阅的当前状态、确认新的购买，并保存令牌的单向哈希值以及产品、订阅状态、到期时间和验证时间。除下文所述的加密邀请处理外，原始购买令牌不会被保存。Google Play 还会就订阅变更（例如续订、取消和退款）向该服务发送实时通知，服务随后会再次向 Google 核实订阅状态。Firebase 匿名身份验证和使用 Google Play Integrity 的 Firebase App Check 会验证这些请求来自正版应用。</p>
       <p>应用在设备上保留已验证的订阅状态最长 12 小时，或直到订阅到期（以较早者为准），并且不会将其纳入 Android 备份。购买验证记录会在恢复和验证订阅所需的期间内保留。如需删除，请按下文所述联系开发者。删除这些记录不会取消 Google Play 订阅；请在 Google Play 商店中管理或取消订阅。验证的频率限制记录约 24 小时后失效。</p>
+    </section>
+
+    <section>
+      <h2>邀请和免费月份</h2>
+      <p>为运行邀请计划并发放免费月份，我们的 Firebase 后端保存随机邀请用户 ID、邀请码、平台、谁邀请了谁、商店交易标识符、购买及奖励日期和奖励余额。我们通过购买历史检查资格，通过商店通知处理续订、退款和撤销。邀请功能不收集姓名、电子邮件或联系人。在 iPhone 上，ID 保存在钥匙串和 iCloud 键值存储中，可跨重装及设备保留；在 Android 上则按安装生成。</p>
+      <p>重试或待确认邀请所需的购买令牌会加密保存，且仅在有需要期间保留。邀请记录会在管理计划和奖励所需的期间保留。你可以通过下方联系方式请求删除；删除应用不会删除这些后端记录，也不会取消商店订阅。</p>
+      <p>邀请用户 ID、邀请码和日期不会发送至产品 Analytics。分享链接可能包含你的邀请码、公开 YouTube 视频或 Apple Music 歌曲标识符，以及片段起止时间。邀请功能绝不上传本地文件或录制的视频。邀请网页不加载页面访问分析；商店按钮使用 invite 广告系列标签。Google Play 通过编码的安装来源参数接收链接字段，让应用在安装后处理邀请。</p>
     </section>
 
     <section>

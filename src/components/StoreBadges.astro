@@ -5,6 +5,7 @@ import { SITE, STORE } from '../config/site';
 import { getLocale, t, type LocaleSlug } from '../i18n';
 import { appStoreUrl, playStoreUrl, resolveCampaign } from '../lib/storeLinks';
 import { withBase } from '../lib/paths';
+import { INVITE_CAMPAIGN } from '../lib/inviteLinks';
 
 interface Props {
   locale: LocaleSlug;
@@ -17,7 +18,7 @@ const def = getLocale(locale);
 const dict = t(locale);
 
 // Build-time defaults; the store-links script re-targets these for visitors who arrived via a tracked link.
-const campaign = resolveCampaign(placement);
+const campaign = placement === 'invite' ? INVITE_CAMPAIGN : resolveCampaign(placement);
 const appleHref = appStoreUrl(STORE, campaign);
 const playHref = playStoreUrl(STORE, campaign, def.playHl);
 

@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import { REFERRALS } from '../i18n/referrals';
+import { SITE } from '../config/site';
+import type { LocaleSlug } from '../i18n';
+
+interface Props { locale: LocaleSlug }
+const { locale } = Astro.props;
+const d = REFERRALS[locale];
+---
+
+<BaseLayout locale={locale} page="terms" alternates title={`${d.terms} – ${SITE.name}`} description={d.offer}>
+  <SiteHeader locale={locale} page="terms" />
+  <main id="main" class="terms wrap">
+    <h1>{d.terms}</h1>
+    <section aria-labelledby="invites">
+      <h2 id="invites">{d.invites}</h2>
+      <table>
+        <tbody>{d.rules.map(([label, rule]) => <tr><th scope="row">{label}</th><td>{rule}</td></tr>)}</tbody>
+      </table>
+      <p class="muted">{d.delivery}</p>
+    </section>
+  </main>
+  <SiteFooter locale={locale} page="terms" />
+</BaseLayout>
+
+<style>
+  .terms { max-width: 55rem; padding-block: 2rem 5rem; }
+  h1 { font-size: var(--step-3); margin-bottom: 2.25rem; overflow-wrap: anywhere; hyphens: auto; }
+  h2 { font-size: var(--step-2); }
+  section { display: grid; gap: 1.5rem; }
+  table { width: 100%; border-collapse: collapse; text-align: start; }
+  th, td { padding-block: 1rem; border-block-start: 1px solid var(--rule); vertical-align: top; }
+  th { width: 30%; padding-inline-end: 1.5rem; font-weight: 650; }
+  td { color: var(--haze); }
+  tr:last-child :is(th, td) { border-block-end: 1px solid var(--rule); }
+  @media (max-width: 539px) {
+    th, td { display: block; width: 100%; }
+    th { padding-block-end: 0.25rem; }
+    td { padding-block-start: 0; border-block-start: 0; }
+    tr:last-child th { border-block-end: 0; }
+  }
+</style>
